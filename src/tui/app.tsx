@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Box, Text, useApp, useInput } from "ink";
 
 import type { Config } from "./config.js";
@@ -21,6 +21,12 @@ export interface AppProps {
   mcp: McpDispatcher;
   /** Resolved config (Wave 4: required by `/ai`, optional elsewhere). */
   config?: Config;
+  /**
+   * Called once after the component mounts with the stable `push` callback.
+   * Use this to wire external callers (e.g. the OAuth URL callback in cli.ts)
+   * to the transcript before the user can trigger any tool call.
+   */
+  onMounted?: (push: (entry: TranscriptEntry) => void) => void;
 }
 
 const HEADER_WIDTH = 58;
@@ -38,7 +44,7 @@ const HEADER_WIDTH = 58;
  *   [Transcript]                 (fills the middle, auto-grows)
  *   ▌ _                          (slash input + suggestion overlay)
  */
-export function App({ remoteUrl, mcp, config }: AppProps): React.ReactElement {
+export function App({ remoteUrl, mcp, config, onMounted }: AppProps): React.ReactElement {
   const { exit } = useApp();
   const [entries, setEntries] = useState<readonly TranscriptEntry[]>([]);
   const [tracker, setTracker] = useState<React.ReactNode | null>(null);
@@ -55,6 +61,14 @@ export function App({ remoteUrl, mcp, config }: AppProps): React.ReactElement {
 
   const push = useCallback((entry: TranscriptEntry) => {
     setEntries((prev) => [...prev, entry]);
+  }, []);
+
+  // Expose `push` to external callers (e.g. OAuth URL surfacing in cli.ts)
+  // once the component is mounted. `push` is stable (empty useCallback deps),
+  // so this fires exactly once.
+  useEffect(() => {
+    onMounted?.(push);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearTranscript = useCallback(() => {

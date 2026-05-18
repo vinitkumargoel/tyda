@@ -163,3 +163,74 @@ describe("streamable-http conformance", () => {
     expect(res.status).toBe(401);
   });
 });
+
+type JsonRpcError = { jsonrpc: string; id: unknown; error: { code: number; message: string; data?: unknown } };
+
+async function post(
+  url: string,
+  body: unknown,
+  auth: string,
+): Promise<{ status: number; body: unknown }> {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${auth}`,
+    },
+    body: JSON.stringify(body),
+  });
+  return { status: res.status, body: await res.json() };
+}
+
+describe("JSON-RPC error contracts", () => {
+  const servers = ["food", "im", "dineout"] as const;
+
+  for (const server of servers) {
+    describe(`POST /${server}`, () => {
+      it("returns -32602 Invalid params for missing required fields", async () => {
+        // Each server has tools that require at least one field. Sending an
+        // empty arguments object triggers Zod validation and the -32602 path.
+        const toolName =
+          server === "food" ? "search_restaurants"
+          : server === "im" ? "search_products"
+          : "search_restaurants_dineout";
+        const { status, body } = await post(
+          `${baseUrl}/${server}`,
+          {
+            jsonrpc: "2.0",
+            method: "tools/call",
+            params: { name: toolName, arguments: {} },
+            id: 1,
+          },
+          bearer,
+        );
+        expect(status).toBe(200);
+        const rpc = body as JsonRpcError;
+        expect(rpc.jsonrpc).toBe("2.0");
+        expect(rpc.error).toBeDefined();
+        expect(rpc.error.code).toBe(-32602);
+        expect(typeof rpc.error.message).toBe("string");
+        expect(Array.isArray(rpc.error.data)).toBe(true);
+      });
+
+      it("returns -32601 Method not found for unknown JSON-RPC methods", async () => {
+        const { status, body } = await post(
+          `${baseUrl}/${server}`,
+          {
+            jsonrpc: "2.0",
+            method: "rpc.discover",
+            id: 2,
+          },
+          bearer,
+        );
+        expect(status).toBe(200);
+        const rpc = body as JsonRpcError;
+        expect(rpc.jsonrpc).toBe("2.0");
+        expect(rpc.error).toBeDefined();
+        expect(rpc.error.code).toBe(-32601);
+        expect(typeof rpc.error.message).toBe("string");
+      });
+    });
+  }
+});

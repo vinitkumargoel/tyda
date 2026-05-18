@@ -6,6 +6,7 @@ import { App } from "./app.jsx";
 import { loadConfig, type Config } from "./config.js";
 import { setAiCommandVisibility } from "./slash/registry.js";
 import { createDispatcher } from "./mcp-client.js";
+import type { TranscriptEntry } from "./slash/types.js";
 
 
 export interface CliFlags {
@@ -76,9 +77,25 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
   const config: Config = loadConfig({ flags: cfgFlags });
   setAiCommandVisibility(Boolean(config.llm));
   const stateDir = flags.stateDir ?? `${process.env["HOME"] ?? process.env["USERPROFILE"] ?? "~"}/.tyda-swiggy`;
-  const mcp = createDispatcher({ config, stateDir });
+
+  // Filled in once App mounts via onMounted. The OAuth URL callback captures
+  // this ref so the authorize URL is always shown in the transcript.
+  let pushToTranscript: ((entry: TranscriptEntry) => void) | null = null;
+
+  const mcp = createDispatcher({
+    config,
+    stateDir,
+    onAuthorizeUrl: (url) => {
+      pushToTranscript?.({ kind: "info", text: `Open in browser to log in:\n  ${url}` });
+    },
+  });
   render(
-    React.createElement(App, { remoteUrl: flags.remote, mcp, config }),
+    React.createElement(App, {
+      remoteUrl: flags.remote,
+      mcp,
+      config,
+      onMounted: (push) => { pushToTranscript = push; },
+    }),
   );
 }
 

@@ -185,15 +185,14 @@ export async function runPkceFlow(opts: RunPkceFlowOpts): Promise<PkceResult> {
 
   const urlStr = authorizeUrl.toString();
   onAuthorizeUrl?.(urlStr);
-  // For the default browser opener we get a boolean back; for test stubs (void)
-  // we treat the call as successful. Print a fallback URL to stderr when the
-  // default opener fails (headless / SSH environments).
-  const openResult: unknown = (() => { try { return openBrowser(urlStr); } catch { return false; } })();
-  if (openResult === false) {
-    process.stderr.write(
-      `\nOpen this URL in your browser to complete login:\n  ${urlStr}\n\n`,
-    );
-  }
+  // Always write the URL to stderr before launching the browser. This covers
+  // headless/SSH environments and the case where the default browser opener
+  // fails asynchronously (spawn errors arrive via the child `error` event,
+  // after the synchronous return, so we cannot reliably detect them).
+  process.stderr.write(
+    `\nOpen this URL in your browser to complete login:\n  ${urlStr}\n\n`,
+  );
+  try { openBrowser(urlStr); } catch { /* ignore — URL already visible */ }
 
   let callback: CallbackResult;
   try {
