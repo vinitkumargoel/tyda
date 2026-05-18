@@ -1,0 +1,20 @@
+# Copy to ~/.tyda-swiggy/config.yml and fill in.
+
+# Optional: configure an LLM provider for the `/ai` slash command.
+# When omitted, `/ai` is disabled and the rest of the TUI works normally.
+llm:
+  provider: requestly                       # informational tag
+  base_url: https://gateway.requestly.io/v1 # any OpenAI-compatible endpoint
+  token:    rqly_XXXXXXXXXXXXXXXXXXXX
+  model:    gpt-4o-mini
+  max_steps: 8
+  temperature: 0.2
+  # Only set pricing if you trust your gateway's reporting.
+  # pricing:
+  #   input:  0.15   # USD per million input tokens
+  #   output: 0.60   # USD per million output tokens
+
+# Optional Swiggy MCP endpoint overrides.
+swiggy:
+  remote: http://127.0.0.1:8787             # set to https://mcp.swiggy.com for prod
+  demo_speed: fast                          # fast (30s end-to-end) | real (30min)

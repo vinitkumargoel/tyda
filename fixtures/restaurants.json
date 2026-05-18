@@ -1,0 +1,1089 @@
+[
+  {
+    "id": "meghana-residency-rd",
+    "name": "Meghana Foods",
+    "area": "Residency Road",
+    "city": "Bangalore",
+    "lat": 12.9698,
+    "lng": 77.6022,
+    "cuisines": ["Andhra", "Biryani", "South Indian"],
+    "rating": 4.5,
+    "ratingCount": 18420,
+    "costForTwo": 700,
+    "currency": "INR",
+    "etaMinutes": 32,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Chicken Biryani (Boneless)",
+        "description": "Hyderabadi-style dum biryani with boneless chicken, served with raita and salan.",
+        "price": 329,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Raita", "price": 25 },
+          { "id": "A2", "name": "Boiled Egg", "price": 30 }
+        ],
+        "variants": [
+          { "id": "V1", "label": "Half", "price": 329 },
+          { "id": "V2", "label": "Full", "price": 519 }
+        ],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Mutton Biryani",
+        "description": "Aromatic basmati rice cooked with tender mutton pieces in dum style.",
+        "price": 459,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Raita", "price": 25 }
+        ],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Paneer Biryani",
+        "description": "Soft paneer cubes cooked with fragrant basmati rice and Andhra spices.",
+        "price": 299,
+        "category": "Biryani",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Chicken 65",
+        "description": "Spicy deep-fried chicken starter tossed with curry leaves and green chillies.",
+        "price": 289,
+        "category": "Starters",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Andhra Chicken Curry",
+        "description": "Fiery Andhra-style chicken curry with red chillies and tamarind.",
+        "price": 339,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Gongura Mutton",
+        "description": "Mutton cooked with sorrel leaves in traditional Andhra style.",
+        "price": 419,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Jeera Rice",
+        "description": "Basmati rice tempered with cumin seeds.",
+        "price": 189,
+        "category": "Rice & Breads",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M08",
+        "name": "Double Ka Meetha",
+        "description": "Hyderabadi bread pudding with saffron and dry fruits.",
+        "price": 159,
+        "category": "Desserts",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "empire-koramangala",
+    "name": "Empire Restaurant",
+    "area": "Koramangala",
+    "city": "Bangalore",
+    "lat": 12.9352,
+    "lng": 77.6245,
+    "cuisines": ["Mughlai", "Biryani", "North Indian", "Kebabs"],
+    "rating": 4.3,
+    "ratingCount": 24310,
+    "costForTwo": 600,
+    "currency": "INR",
+    "etaMinutes": 28,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Empire Special Chicken Biryani",
+        "description": "Signature biryani with succulent chicken and house-blend masala.",
+        "price": 269,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Gravy", "price": 30 }
+        ],
+        "variants": [
+          { "id": "V1", "label": "Half", "price": 269 },
+          { "id": "V2", "label": "Full", "price": 429 }
+        ],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Butter Chicken",
+        "description": "Tandoori chicken in a creamy tomato-cashew gravy.",
+        "price": 319,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Chicken Kabab",
+        "description": "Soft hand-minced chicken kababs grilled over charcoal.",
+        "price": 249,
+        "category": "Kebabs",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Seekh Kabab Mutton",
+        "description": "Minced mutton seekh kebabs with spices and herbs.",
+        "price": 289,
+        "category": "Kebabs",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Butter Naan",
+        "description": "Soft tandoor-baked naan brushed with butter.",
+        "price": 49,
+        "category": "Rice & Breads",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Paneer Butter Masala",
+        "description": "Paneer cubes in rich tomato butter gravy.",
+        "price": 269,
+        "category": "Main Course",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Mutton Rogan Josh",
+        "description": "Slow-cooked mutton in a fragrant Kashmiri gravy.",
+        "price": 389,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M08",
+        "name": "Phirni",
+        "description": "Chilled rice pudding flavoured with cardamom and saffron.",
+        "price": 99,
+        "category": "Desserts",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "truffles-indiranagar",
+    "name": "Truffles",
+    "area": "Indiranagar",
+    "city": "Bangalore",
+    "lat": 12.9719,
+    "lng": 77.6412,
+    "cuisines": ["American", "Burgers", "Continental", "Italian"],
+    "rating": 4.4,
+    "ratingCount": 31200,
+    "costForTwo": 800,
+    "currency": "INR",
+    "etaMinutes": 35,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Mexicana Chicken Burger",
+        "description": "Grilled chicken patty with jalapenos, salsa, lettuce and cheddar.",
+        "price": 369,
+        "category": "Burgers",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Cheese Slice", "price": 40 },
+          { "id": "A2", "name": "Fries Upgrade", "price": 60 }
+        ],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Classic Cheese Burger",
+        "description": "Beef-style patty with melted cheddar and house sauce.",
+        "price": 329,
+        "category": "Burgers",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Patty", "price": 99 }
+        ],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Veggie Crunch Burger",
+        "description": "Crispy veg patty with cheese, lettuce and mayo.",
+        "price": 269,
+        "category": "Burgers",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Cajun Spice Fries",
+        "description": "Crispy fries tossed in cajun seasoning.",
+        "price": 179,
+        "category": "Sides",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Chocolate Excess Shake",
+        "description": "Thick chocolate shake topped with whipped cream.",
+        "price": 229,
+        "category": "Shakes",
+        "veg": true,
+        "addOns": [
+          { "id": "A1", "name": "Extra Scoop Ice Cream", "price": 60 }
+        ],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Peri Peri Chicken Wings",
+        "description": "Spicy chicken wings tossed in peri peri seasoning.",
+        "price": 319,
+        "category": "Starters",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "BBQ Chicken Pizza",
+        "description": "Thin crust pizza with BBQ chicken, onions and mozzarella.",
+        "price": 449,
+        "category": "Pizza",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "donne-biryani-hsr",
+    "name": "Donne Biryani House",
+    "area": "HSR Layout",
+    "city": "Bangalore",
+    "lat": 12.9116,
+    "lng": 77.6473,
+    "cuisines": ["Biryani", "South Indian", "Karnataka"],
+    "rating": 4.2,
+    "ratingCount": 9870,
+    "costForTwo": 500,
+    "currency": "INR",
+    "etaMinutes": 30,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Chicken Donne Biryani",
+        "description": "Bangalore-style donne biryani served in a palm leaf cup with green masala.",
+        "price": 219,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Raita", "price": 20 },
+          { "id": "A2", "name": "Boiled Egg", "price": 25 }
+        ],
+        "variants": [
+          { "id": "V1", "label": "Regular", "price": 219 },
+          { "id": "V2", "label": "Jumbo", "price": 319 }
+        ],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Mutton Donne Biryani",
+        "description": "Spicy donne biryani with bone-in mutton chunks.",
+        "price": 319,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Egg Donne Biryani",
+        "description": "Donne biryani with hard-boiled eggs and signature masala.",
+        "price": 179,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Chicken Kebab",
+        "description": "Charcoal-grilled chicken kebabs in Bangalore military style.",
+        "price": 249,
+        "category": "Starters",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Pepper Chicken Dry",
+        "description": "Chicken stir-fried with crushed black pepper and curry leaves.",
+        "price": 269,
+        "category": "Starters",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Ragi Mudde with Mutton Saaru",
+        "description": "Finger millet balls served with traditional Karnataka mutton soup.",
+        "price": 289,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Gulab Jamun",
+        "description": "Soft milk dumplings soaked in sugar syrup.",
+        "price": 89,
+        "category": "Desserts",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "a2b-jayanagar",
+    "name": "A2B - Adyar Ananda Bhavan",
+    "area": "Jayanagar",
+    "city": "Bangalore",
+    "lat": 12.9250,
+    "lng": 77.5938,
+    "cuisines": ["South Indian", "North Indian", "Sweets", "Chaat"],
+    "rating": 4.3,
+    "ratingCount": 14200,
+    "costForTwo": 500,
+    "currency": "INR",
+    "etaMinutes": 25,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Masala Dosa",
+        "description": "Crispy rice crepe stuffed with spiced potato filling, served with sambar and chutney.",
+        "price": 139,
+        "category": "South Indian",
+        "veg": true,
+        "addOns": [
+          { "id": "A1", "name": "Extra Ghee", "price": 20 },
+          { "id": "A2", "name": "Extra Chutney", "price": 15 }
+        ],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Idli Vada Combo",
+        "description": "Two soft idlis and one medu vada with sambar and chutneys.",
+        "price": 119,
+        "category": "South Indian",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Mini Tiffin",
+        "description": "Sampler with idli, vada, pongal, mini dosa, kesari and chutneys.",
+        "price": 199,
+        "category": "South Indian",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "South Indian Thali",
+        "description": "Unlimited rice with sambar, rasam, kootu, poriyal, curd and dessert.",
+        "price": 249,
+        "category": "Thali",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Rava Kesari",
+        "description": "Semolina sweet with ghee, cashews and saffron.",
+        "price": 79,
+        "category": "Sweets",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Mysore Pak",
+        "description": "Rich ghee-laden gram flour fudge, Mysore-style.",
+        "price": 99,
+        "category": "Sweets",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Filter Coffee",
+        "description": "Strong South Indian filter coffee served in tumbler and dabarah.",
+        "price": 49,
+        "category": "Beverages",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "bombay-brasserie-indiranagar",
+    "name": "Bombay Brasserie",
+    "area": "Indiranagar",
+    "city": "Bangalore",
+    "lat": 12.9787,
+    "lng": 77.6390,
+    "cuisines": ["Pan-Indian", "North Indian", "Mughlai", "Coastal"],
+    "rating": 4.4,
+    "ratingCount": 8650,
+    "costForTwo": 1200,
+    "currency": "INR",
+    "etaMinutes": 40,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Bombay Bhel",
+        "description": "Classic Mumbai-style bhel with sev, chutneys and pomegranate.",
+        "price": 219,
+        "category": "Starters",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Galouti Kebab",
+        "description": "Melt-in-mouth Lucknowi mutton kebabs served with ulte tawa parantha.",
+        "price": 449,
+        "category": "Kebabs",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Goan Fish Curry",
+        "description": "Tangy coconut and tamarind fish curry from coastal Goa.",
+        "price": 489,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Lal Maas",
+        "description": "Fiery Rajasthani mutton curry cooked with mathaniya chillies.",
+        "price": 529,
+        "category": "Main Course",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Dal Bombay Brasserie",
+        "description": "Signature black dal slow-cooked overnight with butter and cream.",
+        "price": 379,
+        "category": "Main Course",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Lucknowi Biryani",
+        "description": "Awadhi-style dum biryani with kewra and saffron.",
+        "price": 499,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [],
+        "variants": [
+          { "id": "V1", "label": "Chicken", "price": 499 },
+          { "id": "V2", "label": "Mutton", "price": 599 }
+        ],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Shahi Tukda",
+        "description": "Saffron-soaked fried bread layered with rabri and pistachios.",
+        "price": 229,
+        "category": "Desserts",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "vidyarthi-bhavan-basavanagudi",
+    "name": "Vidyarthi Bhavan",
+    "area": "Basavanagudi",
+    "city": "Bangalore",
+    "lat": 12.9421,
+    "lng": 77.5731,
+    "cuisines": ["South Indian", "Karnataka"],
+    "rating": 4.6,
+    "ratingCount": 22150,
+    "costForTwo": 300,
+    "currency": "INR",
+    "etaMinutes": 22,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Masala Dosa",
+        "description": "Iconic ghee-roasted dosa with spiced potato, served with chutney.",
+        "price": 99,
+        "category": "Dosa",
+        "veg": true,
+        "addOns": [
+          { "id": "A1", "name": "Extra Ghee", "price": 15 }
+        ],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Rava Vada",
+        "description": "Crispy semolina vadas with coconut chutney.",
+        "price": 69,
+        "category": "Vada",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Khara Bath",
+        "description": "Spicy upma with vegetables and curry leaves.",
+        "price": 79,
+        "category": "Bath",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Kesari Bath",
+        "description": "Saffron-flavoured sweet semolina dish.",
+        "price": 79,
+        "category": "Bath",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Chow Chow Bath",
+        "description": "Half-and-half kesari bath and khara bath combo.",
+        "price": 119,
+        "category": "Bath",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Idli Plate",
+        "description": "Two fluffy steamed idlis with sambar and chutney.",
+        "price": 59,
+        "category": "Idli",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Filter Coffee",
+        "description": "Traditional South Indian filter coffee.",
+        "price": 39,
+        "category": "Beverages",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "brik-oven-koramangala",
+    "name": "Brik Oven",
+    "area": "Koramangala",
+    "city": "Bangalore",
+    "lat": 12.9356,
+    "lng": 77.6180,
+    "cuisines": ["Pizza", "Italian", "Continental"],
+    "rating": 4.5,
+    "ratingCount": 11320,
+    "costForTwo": 900,
+    "currency": "INR",
+    "etaMinutes": 38,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Margherita Pizza",
+        "description": "Classic wood-fired pizza with tomato, mozzarella and basil.",
+        "price": 349,
+        "category": "Pizza",
+        "veg": true,
+        "addOns": [
+          { "id": "A1", "name": "Extra Cheese", "price": 80 },
+          { "id": "A2", "name": "Truffle Oil Drizzle", "price": 120 }
+        ],
+        "variants": [
+          { "id": "V1", "label": "Regular 9 inch", "price": 349 },
+          { "id": "V2", "label": "Large 12 inch", "price": 549 }
+        ],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Pepperoni Pizza",
+        "description": "Wood-fired pizza with chicken pepperoni and mozzarella.",
+        "price": 499,
+        "category": "Pizza",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Cheese Burst Crust", "price": 100 }
+        ],
+        "variants": [
+          { "id": "V1", "label": "Regular 9 inch", "price": 499 },
+          { "id": "V2", "label": "Large 12 inch", "price": 749 }
+        ],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Quattro Formaggi",
+        "description": "Four-cheese pizza with mozzarella, parmesan, gorgonzola and cheddar.",
+        "price": 559,
+        "category": "Pizza",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Truffle Mushroom Pizza",
+        "description": "Wild mushrooms and truffle oil on white sauce base.",
+        "price": 629,
+        "category": "Pizza",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Garlic Bread with Cheese",
+        "description": "Wood-fired garlic bread topped with mozzarella.",
+        "price": 199,
+        "category": "Sides",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Penne Arrabbiata",
+        "description": "Penne pasta in spicy tomato and chilli sauce.",
+        "price": 329,
+        "category": "Pasta",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Tiramisu",
+        "description": "Classic Italian dessert with mascarpone and espresso-soaked ladyfingers.",
+        "price": 249,
+        "category": "Desserts",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "hari-super-sandwich-jayanagar",
+    "name": "Hari Super Sandwich",
+    "area": "Jayanagar",
+    "city": "Bangalore",
+    "lat": 12.9258,
+    "lng": 77.5832,
+    "cuisines": ["Sandwiches", "Chaat", "Fast Food"],
+    "rating": 4.4,
+    "ratingCount": 7430,
+    "costForTwo": 300,
+    "currency": "INR",
+    "etaMinutes": 20,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Bombay Masala Sandwich",
+        "description": "Toasted sandwich loaded with potato masala, chutney and grated cheese.",
+        "price": 119,
+        "category": "Sandwiches",
+        "veg": true,
+        "addOns": [
+          { "id": "A1", "name": "Extra Cheese", "price": 30 },
+          { "id": "A2", "name": "Schezwan Layer", "price": 20 }
+        ],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Cheese Chilli Sandwich",
+        "description": "Loaded cheese sandwich with green chillies and capsicum.",
+        "price": 139,
+        "category": "Sandwiches",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Paneer Tikka Sandwich",
+        "description": "Grilled sandwich with spiced paneer tikka filling.",
+        "price": 159,
+        "category": "Sandwiches",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Chocolate Cheese Sandwich",
+        "description": "Sweet sandwich with chocolate sauce and cheese.",
+        "price": 129,
+        "category": "Sandwiches",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Pav Bhaji",
+        "description": "Spiced mashed vegetables served with buttered pav.",
+        "price": 149,
+        "category": "Chaat",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Sev Puri",
+        "description": "Crispy puris topped with chutneys, onions and sev.",
+        "price": 99,
+        "category": "Chaat",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Masala Lime Soda",
+        "description": "Fizzy lime soda with masala salt.",
+        "price": 59,
+        "category": "Beverages",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  },
+  {
+    "id": "nagarjuna-residency-rd",
+    "name": "Nagarjuna",
+    "area": "Residency Road",
+    "city": "Bangalore",
+    "lat": 12.9712,
+    "lng": 77.6028,
+    "cuisines": ["Andhra", "South Indian", "Biryani"],
+    "rating": 4.3,
+    "ratingCount": 15890,
+    "costForTwo": 900,
+    "currency": "INR",
+    "etaMinutes": 33,
+    "imageUrl": null,
+    "menu": [
+      {
+        "id": "M01",
+        "name": "Andhra Meals (Veg)",
+        "description": "Unlimited rice with sambar, rasam, dal, vegetables, papad and curd.",
+        "price": 349,
+        "category": "Thali",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M02",
+        "name": "Andhra Meals (Non-Veg)",
+        "description": "Veg meals plus chicken curry, fish fry and mutton pepper.",
+        "price": 549,
+        "category": "Thali",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": true,
+        "available": true
+      },
+      {
+        "id": "M03",
+        "name": "Nagarjuna Special Biryani",
+        "description": "Andhra-style biryani with house spice blend.",
+        "price": 369,
+        "category": "Biryani",
+        "veg": false,
+        "addOns": [
+          { "id": "A1", "name": "Extra Mirchi Salan", "price": 30 }
+        ],
+        "variants": [
+          { "id": "V1", "label": "Chicken", "price": 369 },
+          { "id": "V2", "label": "Mutton", "price": 499 }
+        ],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M04",
+        "name": "Chicken Pepper Fry",
+        "description": "Spicy chicken roasted with crushed pepper and curry leaves.",
+        "price": 329,
+        "category": "Starters",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M05",
+        "name": "Royyala Vepudu (Prawn Fry)",
+        "description": "Andhra-style prawn fry with red chilli and curry leaves.",
+        "price": 449,
+        "category": "Starters",
+        "veg": false,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M06",
+        "name": "Pesarattu",
+        "description": "Green gram dosa served with ginger chutney.",
+        "price": 159,
+        "category": "Main Course",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      },
+      {
+        "id": "M07",
+        "name": "Pootharekulu",
+        "description": "Traditional Andhra paper sweet with jaggery and ghee.",
+        "price": 119,
+        "category": "Desserts",
+        "veg": true,
+        "addOns": [],
+        "variants": [],
+        "isBestseller": false,
+        "available": true
+      }
+    ]
+  }
+]

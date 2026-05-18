@@ -1,0 +1,57 @@
+# Swiggy MCP Spec Snapshot
+timestamp: 2026-05-18T17:09:22Z
+base_url: https://mcp.swiggy.com/builders/docs/
+
+## Files
+https://mcp.swiggy.com/builders/docs/reference/food/get_addresses.md -> spec/food/get_addresses.md
+https://mcp.swiggy.com/builders/docs/reference/food/search_restaurants.md -> spec/food/search_restaurants.md
+https://mcp.swiggy.com/builders/docs/reference/food/search_menu.md -> spec/food/search_menu.md
+https://mcp.swiggy.com/builders/docs/reference/food/get_restaurant_menu.md -> spec/food/get_restaurant_menu.md
+https://mcp.swiggy.com/builders/docs/reference/food/fetch_food_coupons.md -> spec/food/fetch_food_coupons.md
+https://mcp.swiggy.com/builders/docs/reference/food/apply_food_coupon.md -> spec/food/apply_food_coupon.md
+https://mcp.swiggy.com/builders/docs/reference/food/get_food_cart.md -> spec/food/get_food_cart.md
+https://mcp.swiggy.com/builders/docs/reference/food/update_food_cart.md -> spec/food/update_food_cart.md
+https://mcp.swiggy.com/builders/docs/reference/food/flush_food_cart.md -> spec/food/flush_food_cart.md
+https://mcp.swiggy.com/builders/docs/reference/food/place_food_order.md -> spec/food/place_food_order.md
+https://mcp.swiggy.com/builders/docs/reference/food/get_food_orders.md -> spec/food/get_food_orders.md
+https://mcp.swiggy.com/builders/docs/reference/food/get_food_order_details.md -> spec/food/get_food_order_details.md
+https://mcp.swiggy.com/builders/docs/reference/food/track_food_order.md -> spec/food/track_food_order.md
+https://mcp.swiggy.com/builders/docs/reference/food/report_error.md -> spec/food/report_error.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/get_addresses.md -> spec/instamart/get_addresses.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/create_address.md -> spec/instamart/create_address.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/delete_address.md -> spec/instamart/delete_address.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/search_products.md -> spec/instamart/search_products.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/your_go_to_items.md -> spec/instamart/your_go_to_items.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/get_cart.md -> spec/instamart/get_cart.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/update_cart.md -> spec/instamart/update_cart.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/clear_cart.md -> spec/instamart/clear_cart.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/checkout.md -> spec/instamart/checkout.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/get_orders.md -> spec/instamart/get_orders.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/get_order_details.md -> spec/instamart/get_order_details.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/track_order.md -> spec/instamart/track_order.md
+https://mcp.swiggy.com/builders/docs/reference/instamart/report_error.md -> spec/instamart/report_error.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/get_saved_locations.md -> spec/dineout/get_saved_locations.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/search_restaurants_dineout.md -> spec/dineout/search_restaurants_dineout.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/get_restaurant_details.md -> spec/dineout/get_restaurant_details.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/get_available_slots.md -> spec/dineout/get_available_slots.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/create_cart.md -> spec/dineout/create_cart.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/book_table.md -> spec/dineout/book_table.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/get_booking_status.md -> spec/dineout/get_booking_status.md
+https://mcp.swiggy.com/builders/docs/reference/dineout/report_error.md -> spec/dineout/report_error.md
+https://mcp.swiggy.com/builders/docs/start/authenticate.md -> spec/start/authenticate.md
+https://mcp.swiggy.com/builders/docs/reference/index.md -> spec/reference-index.md
+https://mcp.swiggy.com/builders/docs/reference/errors.md -> spec/errors.md
+https://mcp.swiggy.com/builders/docs/build/recipes/order-food.md -> spec/recipe-order-food.md
+https://mcp.swiggy.com/builders/docs/build/recipes/order-groceries.md -> spec/recipe-order-groceries.md
+https://mcp.swiggy.com/builders/docs/build/recipes/book-a-table.md -> spec/recipe-book-a-table.md
+https://mcp.swiggy.com/builders/docs/build/recipes/combined.md -> spec/recipe-combined.md
+https://mcp.swiggy.com/builders/docs/build/widgets.md -> spec/widgets.md
+https://mcp.swiggy.com/builders/docs/build/agent-patterns/multi-turn-state.md -> spec/agent-patterns-multi-turn-state.md
+
+## Counts
+food/:      14
+instamart/: 13
+dineout/:   8
+start/:     1
+top-level:  8
+total:      44

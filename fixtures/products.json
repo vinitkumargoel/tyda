@@ -1,0 +1,609 @@
+[
+  {
+    "id": "IP001",
+    "name": "Amul Taaza Toned Milk",
+    "brand": "Amul",
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP001-500ml", "label": "500 ml", "price": 30, "stock": 240 },
+      { "spinId": "IP001-1l", "label": "1 L", "price": 58, "stock": 180 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP002",
+    "name": "Mother Dairy Curd",
+    "brand": "Mother Dairy",
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP002-400g", "label": "400 g", "price": 45, "stock": 90 },
+      { "spinId": "IP002-800g", "label": "800 g", "price": 85, "stock": 60 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP003",
+    "name": "Amul Salted Butter",
+    "brand": "Amul",
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP003-100g", "label": "100 g", "price": 60, "stock": 150 },
+      { "spinId": "IP003-500g", "label": "500 g", "price": 285, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP004",
+    "name": "Amul Cheese Slices",
+    "brand": "Amul",
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP004-100g", "label": "100 g (5 slices)", "price": 95, "stock": 70 },
+      { "spinId": "IP004-200g", "label": "200 g (10 slices)", "price": 180, "stock": 45 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP005",
+    "name": "Nandini Paneer",
+    "brand": "Nandini",
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP005-200g", "label": "200 g", "price": 95, "stock": 50 },
+      { "spinId": "IP005-500g", "label": "500 g", "price": 230, "stock": 30 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP006",
+    "name": "Aashirvaad Atta",
+    "brand": "Aashirvaad",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP006-5kg", "label": "5 kg", "price": 285, "stock": 80 },
+      { "spinId": "IP006-10kg", "label": "10 kg", "price": 545, "stock": 40 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP007",
+    "name": "India Gate Basmati Rice",
+    "brand": "India Gate",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP007-1kg", "label": "1 kg", "price": 165, "stock": 120 },
+      { "spinId": "IP007-5kg", "label": "5 kg", "price": 795, "stock": 25 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP008",
+    "name": "Tata Salt",
+    "brand": "Tata",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP008-1kg", "label": "1 kg", "price": 28, "stock": 300 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP009",
+    "name": "Fortune Sunflower Oil",
+    "brand": "Fortune",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP009-1l", "label": "1 L Pouch", "price": 145, "stock": 100 },
+      { "spinId": "IP009-5l", "label": "5 L Jar", "price": 695, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP010",
+    "name": "Tata Sampann Toor Dal",
+    "brand": "Tata Sampann",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP010-500g", "label": "500 g", "price": 95, "stock": 110 },
+      { "spinId": "IP010-1kg", "label": "1 kg", "price": 175, "stock": 60 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP011",
+    "name": "Tata Sampann Moong Dal",
+    "brand": "Tata Sampann",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP011-500g", "label": "500 g", "price": 85, "stock": 90 },
+      { "spinId": "IP011-1kg", "label": "1 kg", "price": 165, "stock": 50 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP012",
+    "name": "Red Onion",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP012-1kg", "label": "1 kg", "price": 46, "stock": 120 },
+      { "spinId": "IP012-500g", "label": "500 g", "price": 26, "stock": 80 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP013",
+    "name": "Tomato",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP013-500g", "label": "500 g", "price": 32, "stock": 150 },
+      { "spinId": "IP013-1kg", "label": "1 kg", "price": 58, "stock": 100 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP014",
+    "name": "Potato",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP014-1kg", "label": "1 kg", "price": 38, "stock": 200 },
+      { "spinId": "IP014-2kg", "label": "2 kg", "price": 72, "stock": 100 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP015",
+    "name": "Green Chilli",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP015-100g", "label": "100 g", "price": 12, "stock": 90 },
+      { "spinId": "IP015-250g", "label": "250 g", "price": 28, "stock": 50 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP016",
+    "name": "Ginger",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP016-200g", "label": "200 g", "price": 35, "stock": 75 },
+      { "spinId": "IP016-500g", "label": "500 g", "price": 80, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP017",
+    "name": "Coriander Leaves",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP017-100g", "label": "100 g", "price": 15, "stock": 60 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP018",
+    "name": "Carrot",
+    "brand": null,
+    "category": "Vegetables",
+    "variants": [
+      { "spinId": "IP018-500g", "label": "500 g", "price": 35, "stock": 80 },
+      { "spinId": "IP018-1kg", "label": "1 kg", "price": 65, "stock": 45 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP019",
+    "name": "Bananas (Robusta)",
+    "brand": null,
+    "category": "Fruits",
+    "variants": [
+      { "spinId": "IP019-6pc", "label": "6 pieces", "price": 42, "stock": 90 },
+      { "spinId": "IP019-dozen", "label": "1 dozen", "price": 78, "stock": 60 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP020",
+    "name": "Apples (Shimla)",
+    "brand": null,
+    "category": "Fruits",
+    "variants": [
+      { "spinId": "IP020-4pc", "label": "4 pieces", "price": 120, "stock": 70 },
+      { "spinId": "IP020-1kg", "label": "1 kg", "price": 220, "stock": 40 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP021",
+    "name": "Mango (Alphonso)",
+    "brand": null,
+    "category": "Fruits",
+    "variants": [
+      { "spinId": "IP021-1kg", "label": "1 kg", "price": 350, "stock": 35 },
+      { "spinId": "IP021-dozen", "label": "1 dozen", "price": 999, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP022",
+    "name": "Pomegranate",
+    "brand": null,
+    "category": "Fruits",
+    "variants": [
+      { "spinId": "IP022-500g", "label": "500 g", "price": 95, "stock": 50 },
+      { "spinId": "IP022-1kg", "label": "1 kg", "price": 180, "stock": 30 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP023",
+    "name": "Watermelon",
+    "brand": null,
+    "category": "Fruits",
+    "variants": [
+      { "spinId": "IP023-whole", "label": "Whole (approx 4 kg)", "price": 95, "stock": 25 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP024",
+    "name": "Lays Magic Masala",
+    "brand": "Lays",
+    "category": "Snacks",
+    "variants": [
+      { "spinId": "IP024-52g", "label": "52 g", "price": 20, "stock": 220 },
+      { "spinId": "IP024-90g", "label": "90 g", "price": 30, "stock": 150 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP025",
+    "name": "Kurkure Masala Munch",
+    "brand": "Kurkure",
+    "category": "Snacks",
+    "variants": [
+      { "spinId": "IP025-90g", "label": "90 g", "price": 20, "stock": 200 },
+      { "spinId": "IP025-160g", "label": "160 g", "price": 35, "stock": 100 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP026",
+    "name": "Parle-G Original",
+    "brand": "Parle",
+    "category": "Snacks",
+    "variants": [
+      { "spinId": "IP026-200g", "label": "200 g", "price": 25, "stock": 300 },
+      { "spinId": "IP026-500g", "label": "500 g", "price": 60, "stock": 150 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP027",
+    "name": "Britannia Good Day Cashew",
+    "brand": "Britannia",
+    "category": "Snacks",
+    "variants": [
+      { "spinId": "IP027-90g", "label": "90 g", "price": 30, "stock": 180 },
+      { "spinId": "IP027-200g", "label": "200 g", "price": 70, "stock": 90 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP028",
+    "name": "Haldiram's Aloo Bhujia",
+    "brand": "Haldiram's",
+    "category": "Snacks",
+    "variants": [
+      { "spinId": "IP028-200g", "label": "200 g", "price": 65, "stock": 100 },
+      { "spinId": "IP028-400g", "label": "400 g", "price": 120, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP029",
+    "name": "Maggi 2-Minute Noodles",
+    "brand": "Nestle",
+    "category": "Snacks",
+    "variants": [
+      { "spinId": "IP029-4pack", "label": "4-pack (280 g)", "price": 56, "stock": 220 },
+      { "spinId": "IP029-12pack", "label": "12-pack (840 g)", "price": 168, "stock": 90 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP030",
+    "name": "Coca-Cola",
+    "brand": "Coca-Cola",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP030-750ml", "label": "750 ml", "price": 40, "stock": 180 },
+      { "spinId": "IP030-1.25l", "label": "1.25 L", "price": 70, "stock": 120 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP031",
+    "name": "Thums Up",
+    "brand": "Coca-Cola",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP031-750ml", "label": "750 ml", "price": 40, "stock": 160 },
+      { "spinId": "IP031-2l", "label": "2 L", "price": 95, "stock": 80 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP032",
+    "name": "Bisleri Mineral Water",
+    "brand": "Bisleri",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP032-1l-6pack", "label": "1 L x 6 pack", "price": 120, "stock": 100 },
+      { "spinId": "IP032-2l", "label": "2 L", "price": 35, "stock": 200 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP033",
+    "name": "Tropicana Orange Juice",
+    "brand": "Tropicana",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP033-1l", "label": "1 L", "price": 145, "stock": 60 },
+      { "spinId": "IP033-200ml", "label": "200 ml", "price": 35, "stock": 130 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP034",
+    "name": "Red Bull Energy Drink",
+    "brand": "Red Bull",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP034-250ml", "label": "250 ml", "price": 125, "stock": 90 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP035",
+    "name": "Tata Tea Gold",
+    "brand": "Tata",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP035-250g", "label": "250 g", "price": 175, "stock": 80 },
+      { "spinId": "IP035-500g", "label": "500 g", "price": 340, "stock": 50 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP036",
+    "name": "Nescafe Classic Coffee",
+    "brand": "Nestle",
+    "category": "Beverages",
+    "variants": [
+      { "spinId": "IP036-50g", "label": "50 g", "price": 165, "stock": 110 },
+      { "spinId": "IP036-200g", "label": "200 g", "price": 595, "stock": 30 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP037",
+    "name": "Colgate MaxFresh Toothpaste",
+    "brand": "Colgate",
+    "category": "Personal Care",
+    "variants": [
+      { "spinId": "IP037-150g", "label": "150 g", "price": 115, "stock": 140 },
+      { "spinId": "IP037-300g", "label": "300 g (2 pack)", "price": 215, "stock": 70 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP038",
+    "name": "Dove Soap",
+    "brand": "Dove",
+    "category": "Personal Care",
+    "variants": [
+      { "spinId": "IP038-100g", "label": "100 g", "price": 75, "stock": 130 },
+      { "spinId": "IP038-4pack", "label": "4 x 100 g", "price": 280, "stock": 50 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP039",
+    "name": "Head & Shoulders Shampoo",
+    "brand": "Head & Shoulders",
+    "category": "Personal Care",
+    "variants": [
+      { "spinId": "IP039-180ml", "label": "180 ml", "price": 195, "stock": 80 },
+      { "spinId": "IP039-650ml", "label": "650 ml", "price": 595, "stock": 35 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP040",
+    "name": "Gillette Mach3 Razor",
+    "brand": "Gillette",
+    "category": "Personal Care",
+    "variants": [
+      { "spinId": "IP040-1pc", "label": "1 piece", "price": 235, "stock": 60 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP041",
+    "name": "Whisper Ultra Sanitary Pads",
+    "brand": "Whisper",
+    "category": "Personal Care",
+    "variants": [
+      { "spinId": "IP041-15pc", "label": "XL 15 pads", "price": 199, "stock": 90 },
+      { "spinId": "IP041-30pc", "label": "XL 30 pads", "price": 379, "stock": 45 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP042",
+    "name": "Surf Excel Easy Wash Detergent",
+    "brand": "Surf Excel",
+    "category": "Household",
+    "variants": [
+      { "spinId": "IP042-1kg", "label": "1 kg", "price": 165, "stock": 100 },
+      { "spinId": "IP042-4kg", "label": "4 kg", "price": 595, "stock": 40 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP043",
+    "name": "Vim Dishwash Liquid",
+    "brand": "Vim",
+    "category": "Household",
+    "variants": [
+      { "spinId": "IP043-250ml", "label": "250 ml", "price": 65, "stock": 150 },
+      { "spinId": "IP043-750ml", "label": "750 ml", "price": 175, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP044",
+    "name": "Harpic Toilet Cleaner",
+    "brand": "Harpic",
+    "category": "Household",
+    "variants": [
+      { "spinId": "IP044-500ml", "label": "500 ml", "price": 99, "stock": 110 },
+      { "spinId": "IP044-1l", "label": "1 L", "price": 185, "stock": 50 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP045",
+    "name": "Lizol Floor Cleaner",
+    "brand": "Lizol",
+    "category": "Household",
+    "variants": [
+      { "spinId": "IP045-500ml", "label": "500 ml", "price": 119, "stock": 90 },
+      { "spinId": "IP045-2l", "label": "2 L", "price": 395, "stock": 40 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP046",
+    "name": "Good Knight Activ+ Refill",
+    "brand": "Good Knight",
+    "category": "Household",
+    "variants": [
+      { "spinId": "IP046-45ml", "label": "45 ml", "price": 89, "stock": 120 },
+      { "spinId": "IP046-2pack", "label": "2 x 45 ml", "price": 165, "stock": 60 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP047",
+    "name": "Origami Toilet Paper Rolls",
+    "brand": "Origami",
+    "category": "Household",
+    "variants": [
+      { "spinId": "IP047-4pack", "label": "4 rolls", "price": 145, "stock": 80 },
+      { "spinId": "IP047-12pack", "label": "12 rolls", "price": 399, "stock": 30 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP048",
+    "name": "MTR Rava Idli Mix",
+    "brand": "MTR",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP048-500g", "label": "500 g", "price": 95, "stock": 70 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP049",
+    "name": "Eggs (Brown)",
+    "brand": null,
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP049-6pc", "label": "6 pieces", "price": 55, "stock": 200 },
+      { "spinId": "IP049-12pc", "label": "12 pieces (tray)", "price": 105, "stock": 110 },
+      { "spinId": "IP049-30pc", "label": "30 pieces (tray)", "price": 245, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": false
+  },
+  {
+    "id": "IP050",
+    "name": "MDH Garam Masala",
+    "brand": "MDH",
+    "category": "Staples",
+    "variants": [
+      { "spinId": "IP050-100g", "label": "100 g", "price": 85, "stock": 120 },
+      { "spinId": "IP050-200g", "label": "200 g", "price": 165, "stock": 70 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  },
+  {
+    "id": "IP051",
+    "name": "Amul Vanilla Ice Cream Tub",
+    "brand": "Amul",
+    "category": "Dairy",
+    "variants": [
+      { "spinId": "IP051-700ml", "label": "700 ml tub", "price": 195, "stock": 50 },
+      { "spinId": "IP051-1l", "label": "1 L tub", "price": 285, "stock": 0 }
+    ],
+    "imageUrl": null,
+    "veg": true
+  }
+]

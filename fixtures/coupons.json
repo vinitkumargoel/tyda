@@ -1,0 +1,86 @@
+[
+  {
+    "code": "FLAT100",
+    "scope": "food",
+    "title": "Flat ₹100 off",
+    "description": "Flat ₹100 off on any food order above ₹400.",
+    "discountType": "flat",
+    "amount": 100,
+    "minOrderValue": 400,
+    "maxDiscount": null,
+    "appliesTo": null,
+    "active": true
+  },
+  {
+    "code": "BIRYANI20",
+    "scope": "food",
+    "title": "20% off on Biryani",
+    "description": "Get 20% off (max ₹150) on food orders containing a Biryani item.",
+    "discountType": "percent",
+    "amount": 20,
+    "minOrderValue": 0,
+    "maxDiscount": 150,
+    "appliesTo": { "category": "Biryani" },
+    "active": true
+  },
+  {
+    "code": "WELCOME50",
+    "scope": "food",
+    "title": "Welcome ₹50 off",
+    "description": "Flat ₹50 off on your first food order.",
+    "discountType": "flat",
+    "amount": 50,
+    "minOrderValue": 0,
+    "maxDiscount": null,
+    "appliesTo": { "firstOrderOnly": true },
+    "active": true
+  },
+  {
+    "code": "INSTAMART50",
+    "scope": "instamart",
+    "title": "Flat ₹50 off Instamart",
+    "description": "Flat ₹50 off on Instamart orders above ₹299.",
+    "discountType": "flat",
+    "amount": 50,
+    "minOrderValue": 299,
+    "maxDiscount": null,
+    "appliesTo": null,
+    "active": true
+  },
+  {
+    "code": "GROCERY10",
+    "scope": "instamart",
+    "title": "10% off groceries",
+    "description": "10% off (max ₹100) on Instamart orders above ₹499.",
+    "discountType": "percent",
+    "amount": 10,
+    "minOrderValue": 499,
+    "maxDiscount": 100,
+    "appliesTo": null,
+    "active": true
+  },
+  {
+    "code": "SWIGGYONE",
+    "scope": "food",
+    "title": "Swiggy One ₹75 off",
+    "description": "Flat ₹75 off on any food order, no minimum.",
+    "discountType": "flat",
+    "amount": 75,
+    "minOrderValue": 0,
+    "maxDiscount": null,
+    "appliesTo": null,
+    "active": true
+  },
+  {
+    "code": "FRESHFRUIT15",
+    "scope": "instamart",
+    "title": "15% off Fruits",
+    "description": "15% off (max ₹120) on Instamart orders containing Fruits.",
+    "discountType": "percent",
+    "amount": 15,
+    "minOrderValue": 199,
+    "maxDiscount": 120,
+    "appliesTo": { "category": "Fruits" },
+    "active": true
+  }
+]
