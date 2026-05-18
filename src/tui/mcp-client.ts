@@ -11,6 +11,12 @@ export interface DispatcherOpts {
   /** For tests / non-interactive uses. */
   openBrowser?: (url: string) => void;
   /**
+   * Called with the full authorize URL immediately before browser launch.
+   * The TUI uses this to print the URL in the transcript so the user can
+   * paste it on headless/SSH systems if browser launch fails.
+   */
+  onAuthorizeUrl?: (url: string) => void;
+  /**
    * Override transport factory for tests. The default constructs a real
    * StreamableHTTPClientTransport with a fetch wrapper that injects the
    * `Authorization` header and `Origin: http://127.0.0.1`.
@@ -90,6 +96,7 @@ class DispatcherImpl implements McpDispatcher {
   private readonly config: Config;
   private readonly stateDir: string;
   private readonly openBrowser?: (url: string) => void;
+  private readonly onAuthorizeUrl?: (url: string) => void;
   private readonly transportFactory?: DispatcherOpts["transportFactory"];
 
   private cachedToken: StoredToken | null = null;
@@ -100,6 +107,7 @@ class DispatcherImpl implements McpDispatcher {
     this.config = opts.config;
     this.stateDir = opts.stateDir;
     if (opts.openBrowser) this.openBrowser = opts.openBrowser;
+    if (opts.onAuthorizeUrl) this.onAuthorizeUrl = opts.onAuthorizeUrl;
     if (opts.transportFactory) this.transportFactory = opts.transportFactory;
   }
 
@@ -125,6 +133,7 @@ class DispatcherImpl implements McpDispatcher {
         const issuer = this.config.swiggy.remote.replace(/\/+$/, "");
         const opts: Parameters<typeof runPkceFlow>[0] = { issuer };
         if (this.openBrowser) opts.openBrowser = this.openBrowser;
+        if (this.onAuthorizeUrl) opts.onAuthorizeUrl = this.onAuthorizeUrl;
         const fresh = await runPkceFlow(opts);
         const stored: StoredToken = {
           accessToken: fresh.accessToken,

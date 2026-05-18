@@ -55,21 +55,16 @@ const HANDLERS: Record<string, Handler> = {
   report_error: reportError as unknown as Handler,
 };
 
-function validateArgs(name: string, raw: unknown): Record<string, unknown> {
+function validateArgs(
+  name: string,
+  raw: unknown,
+): { ok: true; args: Record<string, unknown> } | { ok: false; issues: z.ZodIssue[] } {
   const tool = ALL_TOOLS.dineout.find((t) => t.name === name);
-  if (!tool) return (raw ?? {}) as Record<string, unknown>;
-  const schema = tool.inputSchema as z.ZodTypeAny;
-  const parsed = schema.safeParse(raw ?? {});
-  if (parsed.success) {
-    return parsed.data as Record<string, unknown>;
-  }
-  // Fall back to the raw object; handlers do their own validation. We log so
-  // strict schema regressions show up.
-  logger.debug("dineout.args.invalid", {
-    tool: name,
-    issues: parsed.error.issues,
-  });
-  return (raw ?? {}) as Record<string, unknown>;
+  if (!tool) return { ok: true, args: (raw ?? {}) as Record<string, unknown> };
+  const parsed = (tool.inputSchema as z.ZodTypeAny).safeParse(raw ?? {});
+  if (parsed.success) return { ok: true, args: parsed.data as Record<string, unknown> };
+  logger.debug("dineout.args.invalid", { tool: name, issues: parsed.error.issues });
+  return { ok: false, issues: parsed.error.issues };
 }
 
 export function mountDineout(
@@ -122,7 +117,19 @@ export function mountDineout(
             id,
           };
         }
-        const args = validateArgs(name, body.params?.arguments ?? {});
+        const validation = validateArgs(name, body.params?.arguments ?? {});
+        if (!validation.ok) {
+          return {
+            jsonrpc: "2.0",
+            error: {
+              code: -32602,
+              message: "Invalid params",
+              data: validation.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
+            },
+            id,
+          };
+        }
+        const args = validation.args;
         try {
           const result = await handler(args);
           return {
@@ -161,11 +168,9 @@ export function mountDineout(
         }
       }
 
-      // Unsupported method — be lenient and return empty tools/list as a default
-      // to match the prior placeholder behavior.
       return {
         jsonrpc: "2.0",
-        result: { tools: [] },
+        error: { code: -32601, message: `Method not found: ${method}` },
         id,
       };
     },

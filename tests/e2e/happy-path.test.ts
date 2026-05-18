@@ -111,7 +111,7 @@ describe("happy path — biryani end-to-end", () => {
       const foodAddressId = addressList[0].id;
       expect(typeof foodAddressId).toBe("string");
 
-      const food = await callTool(baseUrl, "food", "search_restaurants", { query: "biryani" }, token);
+      const food = await callTool(baseUrl, "food", "search_restaurants", { query: "biryani", addressId: foodAddressId }, token);
       expect(food.success).toBe(true);
       const restaurants = food.data.restaurants ?? food.data.items ?? food.data;
       const first = Array.isArray(restaurants) ? restaurants[0] : restaurants[0];
@@ -119,7 +119,7 @@ describe("happy path — biryani end-to-end", () => {
       const restaurantId = first.id ?? first.restaurantId;
       expect(restaurantId).toBeTruthy();
 
-      const menu = await callTool(baseUrl, "food", "get_restaurant_menu", { restaurantId }, token);
+      const menu = await callTool(baseUrl, "food", "get_restaurant_menu", { restaurantId, addressId: foodAddressId }, token);
       expect(menu.success).toBe(true);
       const menuItems: any[] =
         menu.data.items ??
@@ -133,12 +133,12 @@ describe("happy path — biryani end-to-end", () => {
         baseUrl,
         "food",
         "update_food_cart",
-        { restaurantId, cartItems: [{ menuItemId, quantity: 1 }] },
+        { restaurantId, cartItems: [{ menuItemId, quantity: 1 }], addressId: foodAddressId },
         token,
       );
       expect(updated.success).toBe(true);
 
-      const cart = await callTool(baseUrl, "food", "get_food_cart", {}, token);
+      const cart = await callTool(baseUrl, "food", "get_food_cart", { restaurantId, addressId: foodAddressId }, token);
       expect(cart.success).toBe(true);
 
       const placed = await callTool(baseUrl, "food", "place_food_order", { addressId: foodAddressId }, token);

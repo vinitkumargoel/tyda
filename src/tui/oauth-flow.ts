@@ -8,6 +8,12 @@ export interface RunPkceFlowOpts {
   clientId?: string;
   /** For tests: invoked with the full authorize URL instead of opening a browser. */
   openBrowser?: (url: string) => void;
+  /**
+   * Called with the authorize URL whether or not browser launch succeeds.
+   * Use this to display the URL in the TUI so the user can paste it manually
+   * on headless/SSH systems where the browser cannot open.
+   */
+  onAuthorizeUrl?: (url: string) => void;
   /** For tests: timeout for the callback listener (default 5 minutes). */
   timeoutMs?: number;
 }
@@ -34,7 +40,7 @@ function sha256Base64Url(input: string): string {
   return base64url(createHash("sha256").update(input).digest());
 }
 
-function defaultOpenBrowser(url: string): void {
+function defaultOpenBrowser(url: string): boolean {
   const platform = process.platform;
   let cmd: string;
   let args: string[];
@@ -50,12 +56,12 @@ function defaultOpenBrowser(url: string): void {
   }
   try {
     const child = spawn(cmd, args, { stdio: "ignore", detached: true });
-    child.on("error", () => {
-      /* ignore — the user can still copy the URL manually */
-    });
+    let failed = false;
+    child.on("error", () => { failed = true; });
     child.unref();
+    return !failed;
   } catch {
-    /* ignore */
+    return false;
   }
 }
 
@@ -87,6 +93,7 @@ export async function runPkceFlow(opts: RunPkceFlowOpts): Promise<PkceResult> {
   const issuer = opts.issuer.replace(/\/+$/, "");
   const clientId = opts.clientId ?? "tyda-tui";
   const openBrowser = opts.openBrowser ?? defaultOpenBrowser;
+  const onAuthorizeUrl = opts.onAuthorizeUrl;
   const timeoutMs = opts.timeoutMs ?? 5 * 60_000;
 
   const discovery = await fetchDiscovery(issuer);
@@ -176,10 +183,16 @@ export async function runPkceFlow(opts: RunPkceFlowOpts): Promise<PkceResult> {
   authorizeUrl.searchParams.set("code_challenge_method", "S256");
   authorizeUrl.searchParams.set("scope", "mcp:tools");
 
-  try {
-    openBrowser(authorizeUrl.toString());
-  } catch {
-    /* best-effort */
+  const urlStr = authorizeUrl.toString();
+  onAuthorizeUrl?.(urlStr);
+  // For the default browser opener we get a boolean back; for test stubs (void)
+  // we treat the call as successful. Print a fallback URL to stderr when the
+  // default opener fails (headless / SSH environments).
+  const openResult: unknown = (() => { try { return openBrowser(urlStr); } catch { return false; } })();
+  if (openResult === false) {
+    process.stderr.write(
+      `\nOpen this URL in your browser to complete login:\n  ${urlStr}\n\n`,
+    );
   }
 
   let callback: CallbackResult;
