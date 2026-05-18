@@ -85,6 +85,25 @@ export function mountDineout(
       const method = body.method ?? "";
       reply.header("Content-Type", "application/json");
 
+      if (method === "initialize") {
+        const clientVersion =
+          (body.params as Record<string, unknown> | undefined)?.protocolVersion ?? "2024-11-05";
+        return {
+          jsonrpc: "2.0",
+          result: {
+            protocolVersion: clientVersion,
+            capabilities: { tools: {} },
+            serverInfo: { name: "tyda-dineout", version: "0.1.0" },
+          },
+          id,
+        };
+      }
+
+      if (id === null && method.startsWith("notifications/")) {
+        reply.code(202);
+        return "";
+      }
+
       if (method === "tools/list") {
         return {
           jsonrpc: "2.0",

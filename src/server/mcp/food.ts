@@ -181,6 +181,27 @@ export function mountFood(
       const method = body.method ?? "";
       reply.header("Content-Type", "application/json");
 
+      // MCP initialize handshake — the SDK Client sends this on connect().
+      if (method === "initialize") {
+        const clientVersion =
+          (body.params as Record<string, unknown> | undefined)?.protocolVersion ?? "2024-11-05";
+        return {
+          jsonrpc: "2.0",
+          result: {
+            protocolVersion: clientVersion,
+            capabilities: { tools: {} },
+            serverInfo: { name: "tyda-food", version: "0.1.0" },
+          },
+          id,
+        };
+      }
+
+      // Notifications have no id — ack with 204, no body.
+      if (id === null && method.startsWith("notifications/")) {
+        reply.code(202);
+        return "";
+      }
+
       if (method === "tools/list") {
         return {
           jsonrpc: "2.0",
