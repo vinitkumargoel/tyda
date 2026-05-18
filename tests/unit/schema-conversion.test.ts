@@ -73,7 +73,11 @@ describe("zod-to-openai conversion over ALL_TOOLS", () => {
       description: "Array of items to add to cart",
       items: {
         type: "object",
-        properties: {},
+        properties: {
+          spinId: { type: "string", description: "Product spin/variant ID" },
+          quantity: { type: "integer", description: "Quantity; 0 removes the item" },
+        },
+        required: ["spinId", "quantity"],
       },
     });
     expect(converted.function.parameters.required).toEqual([
