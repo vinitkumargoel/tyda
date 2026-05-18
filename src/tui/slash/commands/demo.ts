@@ -281,33 +281,50 @@ async function demoGroceries(ctx: SlashContext): Promise<void> {
 /* Tables recipe                                                       */
 /* ------------------------------------------------------------------ */
 
-interface DineoutVenue { id: string; name: string; area: string; rating: number; avgCostForTwo: number }
-interface DineoutSlot { slotId: string; venueId: string; venueName?: string; date: string; time: string; availableSeats: number }
+interface DineoutSearchRow {
+  restaurantId: string;
+  name: string;
+  area: string;
+  rating: number;
+  costForTwo: number;
+}
+interface DineoutSlotRow { slotId: string; displayTime: string; capacity: number }
+interface DineoutDayRow { dateStr: string; slots: DineoutSlotRow[] }
 
 async function demoTables(ctx: SlashContext): Promise<void> {
   const { REGISTRY } = await import("../registry.js");
 
-  // Find tables
+  // Search for dineout venues
   await announce(ctx, "Finding dineout tables in Indiranagar.");
   ctx.push({ kind: "user", line: "/tables indiranagar" });
-  const tablesEnv = await call<{ venues?: DineoutVenue[]; slots?: DineoutSlot[] }>(ctx, "dineout", "search_restaurants_dineout", { area: "indiranagar" });
-  if (!tablesEnv.success) { fail(ctx, "/tables", (tablesEnv as ErrEnv).error.message); return; }
-
-  // Show venues and find a slot
-  const venues = tablesEnv.data.venues ?? [];
-  const slots = tablesEnv.data.slots ?? [];
-  for (const v of venues) {
-    ctx.push({ kind: "info", text: `  ${v.id}  ${v.name} (${v.area}) — ★${v.rating} — ₹${v.avgCostForTwo}/2` });
+  const searchEnv = await call<{ results: DineoutSearchRow[] }>(ctx, "dineout", "search_restaurants_dineout", { area: "indiranagar" });
+  if (!searchEnv.success) { fail(ctx, "search_restaurants_dineout", (searchEnv as ErrEnv).error.message); return; }
+  const results = searchEnv.data.results ?? [];
+  for (const r of results) {
+    ctx.push({ kind: "info", text: `  ${r.restaurantId}  ${r.name} (${r.area}) — ★${r.rating} — ₹${r.costForTwo}/2` });
   }
-  for (const s of slots) {
-    ctx.push({ kind: "info", text: `  ${s.slotId}  ${s.venueName ?? s.venueId}  ${s.date} ${s.time} — ${s.availableSeats} seats` });
-  }
-
-  const firstSlot = slots[0];
-  if (!firstSlot) { fail(ctx, "/tables", "no slots found"); return; }
+  const topVenue = results[0];
+  if (!topVenue) { fail(ctx, "search_restaurants_dineout", "no venues found"); return; }
+  ctx.state.activeRestaurantId = topVenue.restaurantId;
   await sleep(220);
 
-  // Book
+  // Get available slots for the top venue
+  await announce(ctx, `Getting available slots for ${topVenue.name}.`);
+  const slotsEnv = await call<{ restaurantId: string; days: DineoutDayRow[] }>(ctx, "dineout", "get_available_slots", { restaurantId: topVenue.restaurantId });
+  if (!slotsEnv.success) { fail(ctx, "get_available_slots", (slotsEnv as ErrEnv).error.message); return; }
+  const days = slotsEnv.data.days ?? [];
+  let firstSlot: DineoutSlotRow | undefined;
+  for (const day of days) {
+    const available = day.slots.filter((s) => s.capacity > 0);
+    for (const s of available.slice(0, 2)) {
+      ctx.push({ kind: "info", text: `  ${s.slotId}  ${day.dateStr} ${s.displayTime} — ${s.capacity} seats` });
+    }
+    if (!firstSlot) firstSlot = available[0];
+  }
+  if (!firstSlot) { fail(ctx, "get_available_slots", "no slots with capacity found"); return; }
+  await sleep(220);
+
+  // Book the first available slot
   await announce(ctx, `Booking slot ${firstSlot.slotId}.`);
   ctx.push({ kind: "user", line: `/book ${firstSlot.slotId}` });
   const bookCmd = REGISTRY.get("book");
@@ -316,7 +333,7 @@ async function demoTables(ctx: SlashContext): Promise<void> {
   }
   await sleep(220);
 
-  // Show booking
+  // Show booking details
   await announce(ctx, "Confirming the booking details.");
   const bookingCmd = REGISTRY.get("booking");
   if (bookingCmd) {
