@@ -236,11 +236,15 @@ async function createAddressFromArea(
   try {
     const raw = await ctx.mcp.call("im", "create_address", args);
     const payload = extractToolPayload(raw) as Record<string, unknown> | null;
+    const dataBlock = (payload?.data ?? payload) as Record<string, unknown> | undefined;
     const newId =
       (payload &&
         (payload.id ??
-          (payload.address as Record<string, unknown> | undefined)?.id ??
-          payload.addressId)) ||
+          payload.addressId ??
+          (dataBlock?.address as Record<string, unknown> | undefined)?.id ??
+          (dataBlock?.address as Record<string, unknown> | undefined)?.addressId ??
+          dataBlock?.id ??
+          dataBlock?.addressId)) ||
       null;
     if (typeof newId === "string" && newId.length > 0) {
       ctx.state.activeAddressId = newId;

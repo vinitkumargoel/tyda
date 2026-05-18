@@ -154,12 +154,12 @@ async function demoBiryani(ctx: SlashContext): Promise<void> {
   }
   await sleep(220);
 
-  // Step 6: coupon
-  await announce(ctx, "Applying coupon FLAT100.");
-  ctx.push({ kind: "user", line: "/coupon FLAT100" });
+  // Step 6: coupon — BIRYANI20 applies to any cart with biryani items, no minimum
+  await announce(ctx, "Applying coupon BIRYANI20 (20% off biryani, max ₹150).");
+  ctx.push({ kind: "user", line: "/coupon BIRYANI20" });
   const couponCmd = REGISTRY.get("coupon");
   if (couponCmd) {
-    try { await couponCmd.handler(ctx, ["FLAT100"]); } catch { /* best-effort */ }
+    try { await couponCmd.handler(ctx, ["BIRYANI20"]); } catch { /* best-effort */ }
   }
   await sleep(220);
 
@@ -168,7 +168,12 @@ async function demoBiryani(ctx: SlashContext): Promise<void> {
   ctx.push({ kind: "user", line: "/order" });
   const orderCmd = REGISTRY.get("order");
   if (orderCmd) {
-    try { await orderCmd.handler(ctx, []); } catch { /* best-effort */ }
+    try {
+      await orderCmd.handler(ctx, []);
+    } catch (err) {
+      fail(ctx, "/order", err instanceof Error ? err.message : String(err));
+      return;
+    }
   }
   await sleep(220);
 
@@ -177,7 +182,7 @@ async function demoBiryani(ctx: SlashContext): Promise<void> {
   ctx.push({ kind: "user", line: "/track" });
   const trackCmd = REGISTRY.get("track");
   if (trackCmd) {
-    try { await trackCmd.handler(ctx, []); } catch { /* best-effort */ }
+    try { await trackCmd.handler(ctx, []); } catch { /* tracker is optional */ }
   }
 }
 
