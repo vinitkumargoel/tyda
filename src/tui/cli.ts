@@ -5,15 +5,9 @@ import { render } from "ink";
 import { App } from "./app.jsx";
 import { loadConfig, type Config } from "./config.js";
 import { setAiCommandVisibility } from "./slash/registry.js";
-import type { McpDispatcher } from "./slash/types.js";
+import { createDispatcher } from "./mcp-client.js";
 
-/**
- * CLI entry point.
- *
- * Wave 1 ships a minimal arg parser (no external CLI library) so the entry
- * stays dependency-light. Track E will replace the stub dispatcher with a
- * real Streamable-HTTP MCP client in Wave 1 follow-up.
- */
+
 export interface CliFlags {
   remote: string;
   demoSpeed: "fast" | "real";
@@ -72,21 +66,6 @@ export function parseArgs(argv: readonly string[]): CliFlags {
   return flags;
 }
 
-/**
- * Wave 1 stub dispatcher. Every method throws — Track E owns the real one.
- */
-export function createStubDispatcher(): McpDispatcher {
-  const fail = (): never => {
-    throw new Error(
-      "not wired yet — Track E will replace this in Wave 1",
-    );
-  };
-  return {
-    call: async (_server, _tool, _args) => fail(),
-    ensureAuth: async () => fail(),
-  };
-}
-
 export function main(argv: readonly string[] = process.argv.slice(2)): void {
   const flags = parseArgs(argv);
   const cfgFlags: Record<string, string | undefined> = {
@@ -96,7 +75,8 @@ export function main(argv: readonly string[] = process.argv.slice(2)): void {
   if (flags.configPath) cfgFlags["config"] = flags.configPath;
   const config: Config = loadConfig({ flags: cfgFlags });
   setAiCommandVisibility(Boolean(config.llm));
-  const mcp = createStubDispatcher();
+  const stateDir = flags.stateDir ?? `${process.env["HOME"] ?? process.env["USERPROFILE"] ?? "~"}/.tyda-swiggy`;
+  const mcp = createDispatcher({ config, stateDir });
   render(
     React.createElement(App, { remoteUrl: flags.remote, mcp, config }),
   );
