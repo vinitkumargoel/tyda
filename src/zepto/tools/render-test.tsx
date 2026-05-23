@@ -21,8 +21,8 @@ async function main() {
   const prods = await searchProducts("popcorn", storeId).catch(() => []);
   const p = prods.find((x) => !x.outOfStock) ?? prods[0];
   if (p) {
-    const lines = await renderThumbnailLines(p.image, 28);
-    console.log(`\n=== PRODUCT CARD (${p.name.slice(0, 40)}) — ${lines.length} image rows @ 28 cols ===`);
+    const lines = await renderThumbnailLines(p.image, 14);
+    console.log(`\n=== PRODUCT CARD (${p.name.slice(0, 40)}) — ${lines.length} rows × 14 cols (quadrant) ===`);
     const { lastFrame } = render(<ProductCard idx={3} product={p} lines={lines} />);
     console.log(lastFrame());
   } else {
