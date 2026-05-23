@@ -405,9 +405,10 @@ const App: React.FC = () => {
     if (!prods.length) return print(`No results for "${query}".`, "yellow");
     print(`Results for "${query}":`, "cyan");
     const top = prods.slice(0, 8);
-    // small but sharp: quadrant art packs 2×2 px/cell, so ~14 cols carries plenty
+    // quadrant art (2×2 px/cell) with aspect-correct height: ~20 cols wide renders
+    // ~10 text rows tall for a square product — small, proportioned, and sharp.
     const termW = process.stdout.columns || 80;
-    const imgCols = Math.max(12, Math.min(16, Math.floor(termW * 0.16)));
+    const imgCols = Math.max(18, Math.min(24, Math.floor(termW * 0.22)));
     const arts = await Promise.all(top.map((p) => renderThumbnailLines(p.image, imgCols)));
     top.forEach((p, i) => pushCard(i + 1, p, arts[i]));
     if (prods.length > top.length) print(`(+${prods.length - top.length} more — refine the query)`, "gray");

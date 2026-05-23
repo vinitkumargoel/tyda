@@ -44,11 +44,14 @@ export async function renderThumbnailLines(url: string, cols = 16): Promise<stri
     const buf = Buffer.from(await res.arrayBuffer());
     const img = await Jimp.read(buf);
 
-    // 2×2 pixels per character cell → resize to (2*cols) × (2*rows) pixels.
+    // 2×2 pixels per character cell. Terminal cells are ~2× taller than wide, so to
+    // keep the image's real aspect ratio we use HALF as many text rows as the naive
+    // pixel ratio would suggest (this is what stops the vertical stretch).
+    const CELL_ASPECT = 2; // cell height / cell width
     const srcW = img.bitmap.width;
     const srcH = img.bitmap.height;
     const cw = Math.max(2, cols);
-    const rows = Math.max(1, Math.round((cw * srcH) / srcW));
+    const rows = Math.max(1, Math.round((cw * srcH) / srcW / CELL_ASPECT));
     const pw = cw * 2;
     const ph = rows * 2;
     img.resize({ w: pw, h: ph });
