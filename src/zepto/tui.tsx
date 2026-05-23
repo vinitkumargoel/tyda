@@ -68,7 +68,7 @@ export const ProductCard: React.FC<{ idx: number; product: Product; lines: strin
   const discount = product.mrp > product.price ? Math.round((1 - product.price / product.mrp) * 100) : 0;
   return (
     <Box
-      width={Math.min(termW - 1, 74)}
+      width={Math.min(termW - 1, 88)}
       borderStyle="round"
       borderColor={product.outOfStock ? "gray" : "cyan"}
       paddingX={1}
@@ -405,9 +405,9 @@ const App: React.FC = () => {
     if (!prods.length) return print(`No results for "${query}".`, "yellow");
     print(`Results for "${query}":`, "cyan");
     const top = prods.slice(0, 8);
-    // compact thumbnail (≈9 text rows tall); render in parallel
+    // higher-res thumbnail so it isn't blurry (cols = pixels wide); render in parallel
     const termW = process.stdout.columns || 80;
-    const imgCols = Math.max(14, Math.min(18, Math.floor(termW * 0.2)));
+    const imgCols = Math.max(24, Math.min(34, Math.floor(termW * 0.3)));
     const arts = await Promise.all(top.map((p) => renderThumbnailLines(p.image, imgCols)));
     top.forEach((p, i) => pushCard(i + 1, p, arts[i]));
     if (prods.length > top.length) print(`(+${prods.length - top.length} more — refine the query)`, "gray");
@@ -421,7 +421,7 @@ const App: React.FC = () => {
     const p = prods[n - 1];
     if (!p.image) return print(`No image for "${p.name}".`, "yellow");
     print(`${p.name} — ${rupee(p.price)}`, "cyan");
-    print(await renderThumbnail(p.image, 32));
+    print(await renderThumbnail(p.image, Math.min(48, (process.stdout.columns || 80) - 4)));
   }
 
   async function doAdd(nStr?: string, qtyStr?: string): Promise<void> {
