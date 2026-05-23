@@ -66,6 +66,8 @@ export interface ZeptoSession {
   tokenExp?: number;
   /** Active store id once serviceability is resolved (needed by data endpoints). */
   storeId?: string;
+  /** Currently selected delivery address (drives storeId / search / cart). */
+  selectedAddressId?: string;
 }
 
 /** True if the bearer token is missing or within `skewSec` of expiry. */

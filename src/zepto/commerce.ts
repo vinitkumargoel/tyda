@@ -104,13 +104,94 @@ export async function searchProducts(query: string, storeId: string): Promise<Pr
   return out;
 }
 
+export interface Address {
+  id: string;
+  type: string; // HOME / WORK / OTHER
+  label: string; // human one-liner
+  latitude: number;
+  longitude: number;
+}
+
+/** List the user's saved delivery addresses. */
+export async function getAddresses(http: ZeptoHttp): Promise<Address[]> {
+  const a = await http.signed("GET", U("api/v1/user/customer/addresses/"));
+  const arr = ((a.json as any)?.userAddresses ?? []) as any[];
+  return arr.map((x) => ({
+    id: x.id,
+    type: x.type ?? "ADDRESS",
+    label:
+      [x.buildingName, x.flatDetails, x.landmark].filter(Boolean).join(", ") ||
+      x.googleFormattedAddress ||
+      x.type ||
+      "address",
+    latitude: Number(x.latitude),
+    longitude: Number(x.longitude),
+  }));
+}
+
+/** Resolve the serviceable PRIMARY storeId for a lat/long via serviceability-service. */
+export async function storeForLatLong(
+  http: ZeptoHttp,
+  lat: number,
+  long: number,
+): Promise<{ storeId?: string; serviceable: boolean }> {
+  // NOTE: serviceability uses param names lat / long (not latitude/longitude).
+  const r = await http.signed("GET", U(`serviceability-service/api/v1/serviceability?lat=${lat}&long=${long}`));
+  const data = (r.json as any)?.data;
+  if (r.status !== 200 || !data) return { serviceable: false };
+  const stores = (data.stores ?? []) as any[];
+  const primary = stores.find((s) => s.storeConstruct === "PRIMARY_STORE") ?? stores[0];
+  return { storeId: primary?.storeId, serviceable: !!data.serviceable };
+}
+
+/** Homepage delivery ETA (minutes) for the store at a lat/long — what Zepto shows on open. */
+export async function homepageEtaMinutes(
+  http: ZeptoHttp,
+  storeId: string,
+  lat: number,
+  long: number,
+): Promise<number | undefined> {
+  const r = await http.signed(
+    "POST",
+    U("lms/api/v2/get_page"),
+    { pageType: "HOME", storeId, storeIds: [storeId], latitude: lat, longitude: long },
+    { storeIds: storeId },
+  );
+  const m = JSON.stringify(r.json ?? {}).match(/"etaInMinutes"\s*:\s*"?(\d+)"?/);
+  return m ? Number(m[1]) : undefined;
+}
+
 /**
- * Resolve the active storeId. Serviceability needs a regionId we don't have, so we
- * read it off the most recent order (works for any account that has ordered before).
- * Cached into the session.
+ * Select a delivery address: resolve its store via serviceability and persist
+ * selectedAddressId + storeId on the session. Returns the resolved storeId.
+ */
+export async function selectAddress(http: ZeptoHttp, session: ZeptoSession, addr: Address): Promise<string | undefined> {
+  const { storeId } = await storeForLatLong(http, addr.latitude, addr.longitude);
+  session.selectedAddressId = addr.id;
+  if (storeId) session.storeId = storeId;
+  http.storeId = session.storeId;
+  saveSession(session);
+  return session.storeId;
+}
+
+/**
+ * Resolve the active storeId. Prefers the selected address's serviceable store;
+ * falls back to the most recent order's store. Cached into the session.
  */
 export async function resolveStoreId(http: ZeptoHttp, session: ZeptoSession): Promise<string | undefined> {
   if (session.storeId) return session.storeId;
+  const addrs = await getAddresses(http).catch(() => [] as Address[]);
+  const addr = addrs.find((a) => a.id === session.selectedAddressId) ?? addrs[0];
+  if (addr) {
+    const { storeId } = await storeForLatLong(http, addr.latitude, addr.longitude);
+    if (storeId) {
+      session.selectedAddressId = session.selectedAddressId ?? addr.id;
+      session.storeId = storeId;
+      saveSession(session);
+      return storeId;
+    }
+  }
+  // last resort: a past order's store
   const r = await http.signed("GET", U("api/v2/order/"));
   const sid = ((r.json as any)?.orders ?? [])[0]?.storeId as string | undefined;
   if (sid) {
@@ -120,14 +201,23 @@ export async function resolveStoreId(http: ZeptoHttp, session: ZeptoSession): Pr
   return sid;
 }
 
-/** Resolve delivery context (lat/lng + addressId from saved address, storeId from session/orders). */
+/** Resolve delivery context from the SELECTED saved address (falls back to the first). */
 export async function getDeliveryContext(http: ZeptoHttp, session: ZeptoSession): Promise<DeliveryCtx> {
-  const a = await http.signed("GET", U("api/v1/user/customer/addresses/"));
-  const addr = ((a.json as any)?.userAddresses ?? [])[0];
-  if (!addr) throw new Error("no saved address on the account");
-  const storeId = session.storeId ?? (await resolveStoreId(http, session));
-  if (!storeId) throw new Error("could not resolve storeId (no past orders to read it from)");
-  return { latitude: Number(addr.latitude), longitude: Number(addr.longitude), addressId: addr.id, storeId };
+  const addrs = await getAddresses(http);
+  if (!addrs.length) throw new Error("no saved address on the account");
+  const addr = addrs.find((a) => a.id === session.selectedAddressId) ?? addrs[0];
+  let storeId = session.storeId;
+  if (!storeId || session.selectedAddressId !== addr.id) {
+    storeId = (await storeForLatLong(http, addr.latitude, addr.longitude)).storeId ?? storeId;
+    if (storeId) {
+      session.selectedAddressId = addr.id;
+      session.storeId = storeId;
+      saveSession(session);
+    }
+  }
+  if (!storeId) storeId = await resolveStoreId(http, session);
+  if (!storeId) throw new Error("could not resolve storeId for the selected address");
+  return { latitude: addr.latitude, longitude: addr.longitude, addressId: addr.id, storeId };
 }
 
 /** Set the cart to exactly these items (empty array clears it). Returns the raw cart. */

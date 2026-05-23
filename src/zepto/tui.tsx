@@ -30,9 +30,13 @@ import {
   setCart,
   billSummary,
   resolveStoreId,
+  getAddresses,
+  selectAddress,
+  homepageEtaMinutes,
   type Product,
   type CartItem,
   type DeliveryCtx,
+  type Address,
 } from "./commerce.js";
 
 const rupee = (paise: number) => `₹${(paise / 100).toFixed(2)}`;
@@ -41,6 +45,8 @@ const rupee = (paise: number) => `₹${(paise / 100).toFixed(2)}`;
 const COMMANDS: Array<{ name: string; args: string; desc: string }> = [
   { name: "/login", args: "<phone>", desc: "send a real OTP to your number" },
   { name: "/otp", args: "<code>", desc: "verify the OTP code" },
+  { name: "/addresses", args: "", desc: "list saved delivery addresses" },
+  { name: "/address", args: "<n>", desc: "choose delivery address (sets store + ETA)" },
   { name: "/search", args: "<query>", desc: "search products (shows pictures)" },
   { name: "/pic", args: "<n>", desc: "bigger picture of result n" },
   { name: "/add", args: "<n> [qty]", desc: "add result n to your cart" },
@@ -166,6 +172,7 @@ const App: React.FC = () => {
   const loginRef = useRef<{ http: ZeptoHttp; phone: string } | null>(null);
   const ctxRef = useRef<DeliveryCtx | null>(null);
   const resultsRef = useRef<Product[]>([]);
+  const addrRef = useRef<Address[]>([]);
   const cartRef = useRef<CartLine[]>([]);
   const pendingRef = useRef<string | null>(null); // command to resume after auto-refresh
   const refreshingRef = useRef(false);
@@ -189,14 +196,37 @@ const App: React.FC = () => {
       const ts = tokenStatus(s);
       if (ts.valid) {
         print(`  Logged in as ${userLabel(s.user, s.phone)} — token valid (${humanLeft(ts.secondsLeft)} left).`, "green");
+        void showLocation(); // selected address + delivery ETA
       } else {
-        print(`  ${userLabel(s.user, s.phone)} — session expired; it will auto-refresh on your next action.`, "yellow");
+        // Session expired on open → try to reconnect automatically (silent if ever
+        // possible, otherwise a quick OTP). Only a hard failure surfaces an error.
+        print(`  ${userLabel(s.user, s.phone)} — session expired, reconnecting…`, "yellow");
+        void autoRefresh("session expired");
       }
     } else {
       print("  Not logged in — type /login <phone> to start.", "yellow");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /** Show the selected delivery address + homepage ETA (Zepto's "Delivery in X mins"). */
+  async function showLocation(): Promise<void> {
+    const s = sessionRef.current;
+    if (!s?.token || !tokenStatus(s).valid) return;
+    try {
+      const http = clientFromSession(s);
+      const addrs = await getAddresses(http);
+      if (!addrs.length) return print("  No saved address — add one in the Zepto app.", "yellow");
+      const addr = addrs.find((a) => a.id === s.selectedAddressId) ?? addrs[0];
+      addrRef.current = addrs;
+      const storeId = s.storeId ?? (await resolveStoreId(http, s));
+      const eta = storeId ? await homepageEtaMinutes(http, storeId, addr.latitude, addr.longitude).catch(() => undefined) : undefined;
+      print(`  📍 ${addr.type}: ${addr.label}${eta ? `   ·   ⚡ ~${eta} min delivery` : ""}`, "cyan");
+      print("  (change with /addresses → /address <n>)", "gray");
+    } catch {
+      /* non-fatal */
+    }
+  }
 
   // Token-expiry watcher: warn once when the token is about to lapse. The actual
   // refresh fires automatically on the next authenticated action (see autoRefresh).
@@ -302,7 +332,7 @@ const App: React.FC = () => {
 
     // Auto-refresh gate: authenticated commands check the token first. If it has
     // lapsed, kick off the refresh, queue this command, and resume it afterward.
-    const AUTH_CMDS = new Set(["/search", "/add", "/cart", "/clear"]);
+    const AUTH_CMDS = new Set(["/search", "/add", "/cart", "/clear", "/addresses", "/address"]);
     if (AUTH_CMDS.has(cmd)) {
       const s = sessionRef.current;
       if (!s?.token) {
@@ -318,7 +348,7 @@ const App: React.FC = () => {
 
     switch (cmd) {
       case "/help":
-        print("commands: /login <phone> · /otp <code> · /status · /search <q> · /pic <n> · /add <n> [qty] · /cart · /clear · /quit");
+        print("commands: /login · /otp · /addresses · /address <n> · /search <q> · /pic <n> · /add <n> [qty] · /cart · /clear · /status · /quit");
         break;
       case "/quit":
       case "/exit":
@@ -336,6 +366,13 @@ const App: React.FC = () => {
         break;
       case "/otp":
         await doVerify(arg);
+        break;
+      case "/addresses":
+        await doAddresses();
+        break;
+      case "/address":
+        if (rest[0]) await doAddress(rest[0]);
+        else await doAddresses();
         break;
       case "/search":
         await doSearch(arg);
@@ -380,9 +417,10 @@ const App: React.FC = () => {
     setMode("normal");
     warnedRef.current = false;
     print(`✔ Logged in as ${userLabel(r.user, r.session.phone)} — token valid (${humanLeft(tokenStatus(r.session).secondsLeft)}).`, "green");
-    // resolve storeId in the background so search/cart are ready
+    // resolve storeId + show the selected address & ETA
     try {
       await resolveStoreId(clientFromSession(r.session), r.session);
+      await showLocation();
     } catch {
       /* non-fatal */
     }
@@ -454,6 +492,39 @@ const App: React.FC = () => {
     await setCart(http, ctx, []);
     cartRef.current = [];
     print("Cart cleared.", "green");
+  }
+
+  async function doAddresses(): Promise<void> {
+    const s = ensureLoggedIn();
+    const http = clientFromSession(s);
+    const addrs = await getAddresses(http);
+    addrRef.current = addrs;
+    if (!addrs.length) return print("No saved addresses. Add one in the Zepto app.", "yellow");
+    print("Saved addresses:", "cyan");
+    addrs.forEach((a, i) => {
+      const active = a.id === s.selectedAddressId;
+      print(`  ${i + 1}. ${active ? "●" : "○"} [${a.type}] ${a.label}`, active ? "green" : undefined);
+    });
+    print("Select with: /address <n>", "gray");
+  }
+
+  async function doAddress(nStr?: string): Promise<void> {
+    const s = ensureLoggedIn();
+    const http = clientFromSession(s);
+    let addrs = addrRef.current;
+    if (!addrs.length) {
+      addrs = await getAddresses(http);
+      addrRef.current = addrs;
+    }
+    const n = Number(nStr);
+    if (!n || n < 1 || n > addrs.length) return print("Usage: /address <n> (see /addresses)", "yellow");
+    const addr = addrs[n - 1];
+    print(`Selecting ${addr.type}: ${addr.label}…`);
+    const storeId = await selectAddress(http, s, addr);
+    if (!storeId) return print(`✘ "${addr.label}" is not serviceable.`, "red");
+    ctxRef.current = null; // force delivery-context refresh against the new address
+    const eta = await homepageEtaMinutes(http, storeId, addr.latitude, addr.longitude).catch(() => undefined);
+    print(`✔ Delivering to ${addr.type}: ${addr.label}${eta ? `   ·   ⚡ ~${eta} min delivery` : ""}`, "green");
   }
 
   const awaitingOtp = mode === "awaiting_otp";
