@@ -23,6 +23,7 @@ import { ZeptoHttp } from "./auth/http-client.js";
 import { loadSession, userLabel, type ZeptoSession } from "./auth/session.js";
 import { tokenStatus, humanLeft, tryRefresh } from "./auth/refresh.js";
 import { sendOtp, verifyOtp } from "./auth/otp.js";
+import QRCode from "qrcode";
 import { renderThumbnail, renderThumbnailLines } from "./image.js";
 import {
   searchProducts,
@@ -33,6 +34,12 @@ import {
   getAddresses,
   selectAddress,
   homepageEtaMinutes,
+  createOrder,
+  initiatePayment,
+  paymentStatus,
+  saveCartLocal,
+  loadCartLocal,
+  clearCartLocal,
   type Product,
   type CartItem,
   type DeliveryCtx,
@@ -51,6 +58,8 @@ const COMMANDS: Array<{ name: string; args: string; desc: string }> = [
   { name: "/pic", args: "<n>", desc: "bigger picture of result n" },
   { name: "/add", args: "<n> [qty]", desc: "add result n to your cart" },
   { name: "/cart", args: "", desc: "show the current cart & bill" },
+  { name: "/checkout", args: "", desc: "review the order (does NOT place it)" },
+  { name: "/pay", args: "", desc: "confirm & place the order, then pay (UPI QR)" },
   { name: "/clear", args: "", desc: "empty the cart" },
   { name: "/status", args: "", desc: "session & token status" },
   { name: "/help", args: "", desc: "list all commands" },
@@ -174,6 +183,7 @@ const App: React.FC = () => {
   const resultsRef = useRef<Product[]>([]);
   const addrRef = useRef<Address[]>([]);
   const cartRef = useRef<CartLine[]>([]);
+  const checkoutRef = useRef<{ ctx: DeliveryCtx; cart: any; toPay: number } | null>(null); // armed by /checkout
   const pendingRef = useRef<string | null>(null); // command to resume after auto-refresh
   const refreshingRef = useRef(false);
   const warnedRef = useRef(false); // so the "expiring soon" warning logs once
@@ -184,6 +194,19 @@ const App: React.FC = () => {
     setLog((l) => [...l, { kind: "text", key: keyRef.current++, text, color }]);
   const pushCard = (idx: number, product: Product, lines: string[]) =>
     setLog((l) => [...l, { kind: "card", key: keyRef.current++, idx, product, lines }]);
+
+  /** Mirror the in-memory cart to disk (6h TTL) so it survives a TUI restart. */
+  const persistCart = () =>
+    saveCartLocal(
+      cartRef.current.map((c) => ({
+        productVariantId: c.item.productVariantId,
+        storeProductId: c.item.storeProductId,
+        productId: c.item.productId,
+        qty: c.qty,
+        name: c.name,
+        price: c.price,
+      })),
+    );
 
   useEffect(() => {
     print("╭───────────────────────────────────────────────────────╮", "magenta");
@@ -205,6 +228,18 @@ const App: React.FC = () => {
       }
     } else {
       print("  Not logged in — type /login <phone> to start.", "yellow");
+    }
+    // Restore a saved cart (≤6h old) so it survives a restart.
+    const saved = loadCartLocal();
+    if (saved.length) {
+      cartRef.current = saved.map((i) => ({
+        item: { productVariantId: i.productVariantId, storeProductId: i.storeProductId, productId: i.productId, quantity: i.qty },
+        name: i.name,
+        price: i.price,
+        qty: i.qty,
+      }));
+      const n = cartRef.current.reduce((sum, c) => sum + c.qty, 0);
+      print(`  🛒 Cart restored: ${n} item(s) — /cart to view · /checkout to order.`, "cyan");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -314,6 +349,7 @@ const App: React.FC = () => {
     const ctx = await ensureCtx(s, http);
     const items: CartItem[] = cartRef.current.map((c) => ({ ...c.item, quantity: c.qty }));
     const cart = await setCart(http, ctx, items);
+    persistCart(); // survive restart (6h)
     showBill(cart);
   }
 
@@ -332,7 +368,7 @@ const App: React.FC = () => {
 
     // Auto-refresh gate: authenticated commands check the token first. If it has
     // lapsed, kick off the refresh, queue this command, and resume it afterward.
-    const AUTH_CMDS = new Set(["/search", "/add", "/cart", "/clear", "/addresses", "/address"]);
+    const AUTH_CMDS = new Set(["/search", "/add", "/cart", "/clear", "/addresses", "/address", "/checkout", "/pay"]);
     if (AUTH_CMDS.has(cmd)) {
       const s = sessionRef.current;
       if (!s?.token) {
@@ -348,7 +384,7 @@ const App: React.FC = () => {
 
     switch (cmd) {
       case "/help":
-        print("commands: /login · /otp · /addresses · /address <n> · /search <q> · /pic <n> · /add <n> [qty] · /cart · /clear · /status · /quit");
+        print("commands: /login · /addresses · /address <n> · /search <q> · /pic <n> · /add <n> [qty] · /cart · /checkout · /pay · /clear · /status · /quit");
         break;
       case "/quit":
       case "/exit":
@@ -389,6 +425,12 @@ const App: React.FC = () => {
         break;
       case "/clear":
         await doClear();
+        break;
+      case "/checkout":
+        await doCheckout();
+        break;
+      case "/pay":
+        await doPay();
         break;
       default:
         print(`Unknown command: ${cmd}. /help`, "red");
@@ -491,6 +533,7 @@ const App: React.FC = () => {
     const ctx = await ensureCtx(s, http);
     await setCart(http, ctx, []);
     cartRef.current = [];
+    clearCartLocal();
     print("Cart cleared.", "green");
   }
 
@@ -525,6 +568,73 @@ const App: React.FC = () => {
     ctxRef.current = null; // force delivery-context refresh against the new address
     const eta = await homepageEtaMinutes(http, storeId, addr.latitude, addr.longitude).catch(() => undefined);
     print(`✔ Delivering to ${addr.type}: ${addr.label}${eta ? `   ·   ⚡ ~${eta} min delivery` : ""}`, "green");
+  }
+
+  /** Review the order and ARM it. Nothing is placed until /pay. */
+  async function doCheckout(): Promise<void> {
+    const s = ensureLoggedIn();
+    if (!cartRef.current.length) return print("Cart is empty. /add <n> first.", "yellow");
+    const http = clientFromSession(s);
+    const ctx = await ensureCtx(s, http);
+    const items: CartItem[] = cartRef.current.map((c) => ({ ...c.item, quantity: c.qty }));
+    const cart = await setCart(http, ctx, items); // fresh bill + encryptedSummary
+    const bill = billSummary(cart);
+    checkoutRef.current = { ctx, cart, toPay: bill.toPay };
+    print("── Order summary ───────────────────────", "gray");
+    for (const c of cartRef.current) print(`  ${c.qty}× ${c.name}  ${rupee(c.price)}`);
+    print(`  delivery ${rupee(bill.deliveryFee)}   handling ${rupee(bill.handlingFee)}`);
+    print(`  TO PAY: ${rupee(bill.toPay)}   ETA: ${bill.eta}`, "green");
+    print("────────────────────────────────────────", "gray");
+    print(`⚠  This places a REAL order for ${rupee(bill.toPay)} to your selected address.`, "yellow");
+    print("   Type  /pay  to confirm & place it  ·  /clear to cancel.", "cyan");
+  }
+
+  /** Confirm: place the order, initiate payment, show UPI QR, poll status. */
+  async function doPay(): Promise<void> {
+    const armed = checkoutRef.current;
+    if (!armed) return print("Run /checkout first to review the order.", "yellow");
+    const s = ensureLoggedIn();
+    const http = clientFromSession(s);
+    print(`Placing order for ${rupee(armed.toPay)}…`, "yellow");
+    const order = await createOrder(http, armed.ctx, armed.cart, "ONLINE");
+    if (!order.ok) {
+      print(`✘ order-create failed (HTTP ${order.status}): ${order.message ?? ""}`, "red");
+      print(`  raw: ${JSON.stringify(order.raw).slice(0, 400)}`, "gray");
+      return;
+    }
+    checkoutRef.current = null;
+    print(`✔ Order created: ${order.orderId} (pending payment)`, "green");
+
+    const pay = await initiatePayment(http, armed.ctx, order.orderId!);
+    if (pay.upiIntent) {
+      print("Scan with any UPI app to pay:", "cyan");
+      print(await QRCode.toString(pay.upiIntent, { type: "terminal", small: true }));
+      print(pay.upiIntent, "gray");
+    } else if (pay.paymentUrl) {
+      print("Open this link to pay:", "cyan");
+      print(pay.paymentUrl);
+    } else {
+      print(`payment-init HTTP ${pay.status} — no UPI/URL in response. raw:`, "yellow");
+      print(JSON.stringify(pay.raw).slice(0, 600), "gray");
+    }
+
+    print("Polling payment status…", "gray");
+    for (let i = 0; i < 5; i++) {
+      await new Promise((r) => setTimeout(r, 4000));
+      const st = await paymentStatus(http, order.orderId!);
+      print(`  status: ${st.state ?? st.status}`);
+      if (/SUCCESS|PAID|COMPLETED|CONFIRMED/i.test(st.state ?? "")) {
+        print("✔ Paid! Order confirmed.", "green");
+        cartRef.current = [];
+        clearCartLocal();
+        return;
+      }
+      if (/FAIL|CANCEL|DECLINED/i.test(st.state ?? "")) {
+        print("✘ Payment failed/cancelled.", "red");
+        return;
+      }
+    }
+    print("Still pending — finish in your UPI app; check the Zepto app for confirmation.", "yellow");
   }
 
   const awaitingOtp = mode === "awaiting_otp";

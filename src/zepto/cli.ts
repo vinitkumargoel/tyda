@@ -12,6 +12,7 @@ import { httpLogin } from "./auth/http-login.js";
 import { loadSession, hasSession, SESSION_PATH, summarizeCookies, userLabel } from "./auth/session.js";
 import { tokenStatus, humanLeft, tryRefresh } from "./auth/refresh.js";
 import { cmdSearch, cmdCartDemo, cmdCartClear } from "./commerce.js";
+import { cmdCatalog } from "./catalog.js";
 
 async function cmdLogin(useBrowser: boolean): Promise<void> {
   if (useBrowser) {
@@ -115,9 +116,12 @@ switch (cmd) {
   case "cart-clear":
     void cmdCartClear();
     break;
+  case "catalog":
+    void cmdCatalog(process.argv.slice(3));
+    break;
   default:
     console.error(
-      `Unknown command: ${cmd}\nUsage: tsx src/zepto/cli.ts [login [--browser]|status|refresh|search <q>|cart-demo <q> [--keep]|cart-clear]`,
+      `Unknown command: ${cmd}\nUsage: tsx src/zepto/cli.ts [login [--browser]|status|refresh|search <q>|cart-demo <q> [--keep]|cart-clear|catalog [--store <id>] [--out <dir>] [--concurrency <n>]]`,
     );
     process.exit(1);
 }

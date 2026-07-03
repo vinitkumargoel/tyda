@@ -15,6 +15,7 @@
  */
 import { ZeptoHttp, ZEPTO_BFF } from "./auth/http-client.js";
 import { loadSession, saveSession, type ZeptoSession } from "./auth/session.js";
+import { loadConfig, saveConfig } from "./config.js";
 
 const U = (p: string) => `${ZEPTO_BFF}/${p}`;
 
@@ -243,6 +244,123 @@ export async function setCart(http: ZeptoHttp, ctx: DeliveryCtx, cartProducts: C
 
 export const addItem = (http: ZeptoHttp, ctx: DeliveryCtx, item: CartItem) => setCart(http, ctx, [item]);
 export const clearCart = (http: ZeptoHttp, ctx: DeliveryCtx) => setCart(http, ctx, []);
+
+// ---------------- local cart persistence (survives TUI restart, 6h TTL) --------
+// The cart also lives server-side, but there's no reliable GET to read it back, so
+// we mirror it into ~/.tyda/config.yml under zepto.cart with a timestamp and reload
+// it on open (then re-sync to the server to get a fresh bill).
+
+export const CART_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+
+export interface SavedCartItem {
+  productVariantId: string;
+  storeProductId: string;
+  productId: string;
+  qty: number;
+  name: string;
+  price: number;
+}
+
+export function saveCartLocal(items: SavedCartItem[]): void {
+  const cfg = loadConfig();
+  cfg.zepto = { ...(cfg.zepto ?? {}), cart: { savedAt: Date.now(), items } };
+  saveConfig(cfg);
+}
+
+/** Load the saved cart if it's younger than the 6h TTL; else []. */
+export function loadCartLocal(): SavedCartItem[] {
+  const c = (loadConfig().zepto as { cart?: { savedAt?: number; items?: SavedCartItem[] } } | undefined)?.cart;
+  if (!c?.items?.length) return [];
+  if (Date.now() - (c.savedAt ?? 0) > CART_TTL_MS) return [];
+  return c.items;
+}
+
+export function clearCartLocal(): void {
+  const cfg = loadConfig();
+  if (cfg.zepto && (cfg.zepto as Record<string, unknown>).cart) {
+    delete (cfg.zepto as Record<string, unknown>).cart;
+    saveConfig(cfg);
+  }
+}
+
+// ---------------- checkout / payment (REAL — places an order) ----------------
+//
+// The order-create body is best-effort (mirrors cart/create's shape: geo + ids +
+// the server-signed encryptedSummary). For ONLINE the order is created pending and
+// is only charged once payment succeeds via Juspay. Every function returns the raw
+// response so the caller can surface server validation and we can iterate.
+
+export interface OrderResult {
+  ok: boolean;
+  orderId?: string;
+  status: number;
+  message?: string;
+  raw: unknown;
+}
+
+/** Create an order from the current cart. paymentType "ONLINE" → pending until paid. */
+export async function createOrder(
+  http: ZeptoHttp,
+  ctx: DeliveryCtx,
+  cart: any,
+  paymentType: "ONLINE" | "COD" = "ONLINE",
+): Promise<OrderResult> {
+  const body = {
+    cartId: cart.cartId,
+    addressId: ctx.addressId,
+    storeId: ctx.storeId,
+    latitude: ctx.latitude,
+    longitude: ctx.longitude,
+    deliveryInstructions: {},
+    encryptedSummary: cart.encryptedSummary,
+    paymentType,
+  };
+  const r = await http.signed("POST", U("api/v3/order/"), body, { storeIds: ctx.storeId, store_ids: ctx.storeId });
+  const j = (r.json ?? {}) as any;
+  const orderId = j.orderId ?? j.id ?? j.order?.id ?? j.data?.orderId;
+  return {
+    ok: r.status >= 200 && r.status < 300 && !!orderId,
+    orderId,
+    status: r.status,
+    message: j.message ?? j.error ?? (j.errors && JSON.stringify(j.errors)),
+    raw: j,
+  };
+}
+
+export interface PaymentHandle {
+  status: number;
+  /** A upi://… intent if Juspay returned one (render as QR). */
+  upiIntent?: string;
+  /** A hosted payment URL if that's what came back. */
+  paymentUrl?: string;
+  raw: unknown;
+}
+
+/** Initiate payment for an order. Returns whatever payment handle Juspay hands back. */
+export async function initiatePayment(http: ZeptoHttp, ctx: DeliveryCtx, orderId: string): Promise<PaymentHandle> {
+  const r = await http.signed(
+    "POST",
+    U("payment-service/api/v2/payment/initiate-sdk-payload"),
+    { orderId, storeId: ctx.storeId },
+    { storeIds: ctx.storeId, store_ids: ctx.storeId },
+  );
+  const txt = JSON.stringify(r.json ?? {});
+  const upi = txt.match(/upi:\/\/[^"\\]+/);
+  const url = txt.match(/https?:\/\/[^"\\]+(?:pay|checkout|juspay|upi)[^"\\]*/i);
+  return { status: r.status, upiIntent: upi?.[0], paymentUrl: url?.[0], raw: r.json };
+}
+
+export interface PaymentStatus {
+  status: number;
+  state?: string; // SUCCESS / PENDING / FAILED …
+  raw: unknown;
+}
+
+export async function paymentStatus(http: ZeptoHttp, orderId: string): Promise<PaymentStatus> {
+  const r = await http.signed("GET", U(`api/v1/order/${orderId}/payment-status/`));
+  const j = (r.json ?? {}) as any;
+  return { status: r.status, state: j.status ?? j.state ?? j.paymentStatus ?? j.data?.status, raw: j };
+}
 
 export function billSummary(cart: any): BillSummary {
   const eta =

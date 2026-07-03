@@ -9,3 +9,6 @@ coverage/
 .idea/
 .claude/
 
+
+# Zepto catalog data exports (large, generated)
+zepto-catalog/
